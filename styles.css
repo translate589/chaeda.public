@@ -33,10 +33,25 @@ h1,h2,h3{margin:0;letter-spacing:-.025em}
 .mark{width:32px;height:32px;border-radius:12px;background:var(--mint500);color:#fff;
   display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800}
 .brandname{font-size:17px;font-weight:800}
-.nav{display:flex;gap:4px}
+.nav{display:flex;gap:4px;align-items:center}
 .nav a{font-size:14px;font-weight:600;color:var(--g700);padding:9px 14px;border-radius:12px}
 .nav a:hover{background:var(--g100);color:var(--g900)}
 .nav a[aria-current="page"]{background:var(--mint100);color:var(--mint700);font-weight:700}
+
+.navdrop{position:relative}
+.navdrop-btn{display:flex;align-items:center;gap:2px;font:inherit;font-size:14px;font-weight:600;
+  color:var(--g700);background:none;border:0;padding:9px 10px 9px 14px;border-radius:12px;cursor:pointer}
+.navdrop-btn:hover{background:var(--g100);color:var(--g900)}
+.navdrop.is-active .navdrop-btn{background:var(--mint100);color:var(--mint700);font-weight:700}
+.navdrop-caret{font-size:18px!important;transition:transform .15s ease}
+.navdrop.is-open .navdrop-caret{transform:rotate(180deg)}
+.navdrop-menu{position:absolute;top:calc(100% + 6px);left:0;min-width:200px;background:#fff;
+  border:1px solid var(--g200);border-radius:14px;box-shadow:0 12px 28px rgba(0,0,0,.1);
+  padding:6px;display:none;flex-direction:column;gap:2px}
+.navdrop.is-open .navdrop-menu{display:flex}
+.navdrop-menu a{font-size:14px;font-weight:600;color:var(--g700);padding:9px 12px;border-radius:10px}
+.navdrop-menu a:hover{background:var(--g100);color:var(--g900)}
+.navdrop-menu a[aria-current="page"]{background:var(--mint100);color:var(--mint700);font-weight:700}
 
 /* ── hero ───────────────────────────────── */
 .hero{background:var(--mint500);color:#fff;overflow:hidden}
@@ -245,6 +260,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 .ftr nav{display:flex;gap:20px;font-size:13.5px;font-weight:600}
 .ftr nav a{color:var(--g700)}
 .ftr nav a:hover{color:var(--mint600)}
+
+@media (max-width:640px){
+  .nav{gap:0}
+  .nav a,.navdrop-btn{padding-left:8px;padding-right:8px;font-size:13px}
+  .brandname{display:none}
+}
 
 @media (max-width:920px){
   .hero .wrap{padding-top:56px;padding-bottom:56px}

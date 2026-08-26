@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<sc-if value="{{ isFlow }}" hint-placeholder-val="{{ true }}">
+  <div style="background:{{ cardBg }};border:1px solid {{ cardBorder }};box-shadow:{{ cardShadow }};border-radius:20px;padding:16px;height:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
+      <div style="display:flex;align-items:center;gap:6px">
+        <div style="width:10px;height:10px;border-radius:3px;background:{{ mainColor }}"></div>
+        <div style="font-size:14px;font-weight:800;letter-spacing:-.025em;color:#212121">{{ title }}</div>
+      </div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:-.025em;color:#757575">{{ badge }}</div>
+    </div>
+    <div style="display:flex;align-items:flex-end;gap:3px;height:132px">
+      <sc-for list="{{ months }}" as="m" hint-placeholder-count="12">
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;height:100%">
+          <div style="height:{{ m.h }}px;border-radius:3px;background:{{ m.c }}"></div>
+          <div style="height:{{ m.ph }}px;border-radius:3px;background:#D6D6D6"></div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex;gap:3px">
+      <sc-for list="{{ months }}" as="m" hint-placeholder-count="12">
+        <div style="flex:1;text-align:center;font-size:10px;font-weight:600;color:{{ m.lc }}">{{ m.n }}</div>
+      </sc-for>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;border-top:1px solid #F0F0F0;padding-top:10px">
+      <div style="display:flex;align-items:center;gap:5px"><div style="width:8px;height:8px;border-radius:999px;background:{{ mainColor }}"></div><span style="font-size:11px;font-weight:700;color:#616161">{{ legendA }}</span></div>
+      <sc-if value="{{ hasPrincipal }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:center;gap:5px"><div style="width:8px;height:8px;border-radius:999px;background:#D6D6D6"></div><span style="font-size:11px;font-weight:700;color:#616161">만기 원금 반환</span></div>
+      </sc-if>
+    </div>
+    <div style="font-size:12px;line-height:1.6;letter-spacing:-.025em;color:#616161">{{ caption }}</div>
+    <div style="display:flex;justify-content:space-between;align-items:baseline;background:{{ totalBg }};border-radius:14px;padding:12px 14px;margin-top:auto">
+      <div style="font-size:12px;font-weight:700;letter-spacing:-.025em;color:#616161">1년 세후 이자 합계</div>
+      <div style="font-size:20px;font-weight:800;letter-spacing:-.025em;color:{{ strongColor }}">{{ total }}</div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isRate }}" hint-placeholder-val="{{ false }}">
+  <div style="background:#FFFFFF;border:1px solid #EEEEEE;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:16px">
+    <div style="font-size:14px;font-weight:800;letter-spacing:-.025em;color:#212121">적힌 이율과 실제 수익률</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:12px;font-weight:700;color:#616161">상품에 적힌 이율</span><span style="font-size:20px;font-weight:800;letter-spacing:-.025em;color:#616161">5.00%</span></div>
+      <div style="height:18px;border-radius:4px;background:#BDBDBD"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:12px;font-weight:700;color:#1565C0">내가 넣은 100만원 기준</span><span style="font-size:20px;font-weight:800;letter-spacing:-.025em;color:#1565C0">2.71%</span></div>
+      <div style="height:18px;border-radius:4px;background:#F0F0F0;overflow:hidden"><div style="width:54.2%;height:18px;border-radius:4px;background:#42A5F5"></div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid #F0F0F0;padding-top:14px">
+      <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:#616161">세전 이자</span><span style="font-size:13px;font-weight:700;color:#212121">27,083원</span></div>
+      <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:#616161">이자소득세 15.4%</span><span style="font-size:13px;font-weight:700;color:#B3261E">−4,171원</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:10px;border-top:1px solid #F0F0F0"><span style="font-size:14px;font-weight:700;color:#212121">세후 이자</span><span style="font-size:20px;font-weight:800;letter-spacing:-.025em;color:#1565C0">22,912원</span></div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isCycles }}" hint-placeholder-val="{{ false }}">
+  <div style="background:#FFFFFF;border:1px solid #EEEEEE;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:16px">
+    <div style="font-size:14px;font-weight:800;letter-spacing:-.025em;color:#212121">지급 주기별 이자가 들어오는 달</div>
+    <sc-for list="{{ cycleRows }}" as="row" hint-placeholder-count="4">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:13px;font-weight:800;letter-spacing:-.025em;color:{{ row.labelColor }}">{{ row.label }}</span>
+          <span style="font-size:12px;font-weight:700;color:#757575">{{ row.detail }}</span>
+        </div>
+        <div style="display:flex;gap:3px;height:16px">
+          <sc-for list="{{ row.slots }}" as="s" hint-placeholder-count="12">
+            <div style="flex:1;border-radius:3px;background:{{ s.c }}"></div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+    <div style="font-size:12px;line-height:1.6;letter-spacing:-.025em;color:#616161;border-top:1px solid #F0F0F0;padding-top:12px">네 유형 모두 <b>세후 합계 42,300원</b>. 총액이 아니라 들어오는 리듬을 고르는 것입니다.</div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isCumulative }}" hint-placeholder-val="{{ false }}">
+  <div style="background:#FFFFFF;border:1px solid #EEEEEE;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px">
+    <div style="font-size:14px;font-weight:800;letter-spacing:-.025em;color:#212121">누적 세후 이자 수령액</div>
+    <svg viewBox="0 0 300 150" style="width:100%;height:210px">
+      <line x1="22" y1="26" x2="288" y2="26" stroke="#E0E0E0" stroke-width="1" stroke-dasharray="3 4"></line>
+      <line x1="22" y1="71" x2="288" y2="71" stroke="#F0F0F0" stroke-width="1" stroke-dasharray="3 4"></line>
+      <line x1="22" y1="116" x2="288" y2="116" stroke="#E0E0E0" stroke-width="1"></line>
+      <text x="22" y="20" fill="#757575" font-size="9" font-weight="700">42,300원</text>
+      <polyline points="22,118 276,118 276,69.3" fill="none" stroke="#42A5F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 4"></polyline>
+      <polyline points="22,116 276,116 276,26" fill="none" stroke="#9FA8DA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 4"></polyline>
+      <polyline points="22,116 43.2,116 43.2,108.8 64.3,108.8 64.3,100.6 85.5,100.6 85.5,92.4 106.7,92.4 106.7,84.2 127.8,84.2 127.8,76 149,76 149,67.8 170.2,67.8 170.2,59.6 191.3,59.6 191.3,51.4 212.5,51.4 212.5,43.2 233.7,43.2 233.7,35 254.8,35 254.8,26 276,26" fill="none" stroke="#009688" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+      <circle cx="276" cy="26" r="4" fill="#009688"></circle>
+      <circle cx="276" cy="69.3" r="4" fill="#42A5F5"></circle>
+      <text x="22" y="136" fill="#9E9E9E" font-size="9" font-weight="600">1개월</text>
+      <text x="140" y="136" fill="#9E9E9E" font-size="9" font-weight="600">6개월</text>
+      <text x="252" y="136" fill="#757575" font-size="9" font-weight="600">12개월</text>
+    </svg>
+    <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid #F0F0F0;padding-top:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><div style="display:flex;align-items:center;gap:8px"><div style="width:16px;height:3px;border-radius:999px;background:#009688"></div><span style="font-size:12px;font-weight:700;color:#212121">채권 — 매달 3,525원씩 12번</span></div><span style="font-size:12px;font-weight:800;color:#00695C">42,300원</span></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><div style="display:flex;align-items:center;gap:8px"><div style="width:16px;height:3px;border-radius:999px;background:#9FA8DA"></div><span style="font-size:12px;font-weight:600;color:#616161">예금 — 만기에 한 번</span></div><span style="font-size:12px;font-weight:800;color:#283593">42,300원</span></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><div style="display:flex;align-items:center;gap:8px"><div style="width:16px;height:3px;border-radius:999px;background:#42A5F5"></div><span style="font-size:12px;font-weight:600;color:#616161">적금 — 만기에 한 번</span></div><span style="font-size:12px;font-weight:800;color:#1565C0">22,912원</span></div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isTax }}" hint-placeholder-val="{{ false }}">
+  <div style="background:{{ cardBg }};border:1px solid {{ cardBorder }};box-shadow:{{ cardShadow }};border-radius:20px;padding:16px;height:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:6px">
+      <div style="width:10px;height:10px;border-radius:3px;background:{{ mainColor }}"></div>
+      <div style="font-size:14px;font-weight:800;letter-spacing:-.025em;color:#212121">{{ title }}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:12px;font-weight:700;color:#9E9E9E">세전 이자</span><span style="font-size:13px;font-weight:700;color:#757575">{{ gross }}</span></div>
+      <div style="height:16px;border-radius:4px;background:#F0F0F0;overflow:hidden"><div style="width:{{ grossPct }};height:16px;border-radius:4px;background:#DEDEDE"></div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:12px;font-weight:700;color:{{ strongColor }}">세후 이자 · 실제 수령</span><span style="font-size:20px;font-weight:800;letter-spacing:-.025em;color:{{ strongColor }}">{{ net }}</span></div>
+      <div style="height:16px;border-radius:4px;background:#F0F0F0;overflow:hidden"><div style="width:{{ netPct }};height:16px;border-radius:4px;background:{{ mainColor }}"></div></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;border-top:1px solid #F0F0F0;padding-top:10px"><span style="font-size:12px;font-weight:600;color:#616161">이자소득세 15.4%</span><span style="font-size:12px;font-weight:700;color:#B3261E">{{ tax }}</span></div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isTradeFlow }}" hint-placeholder-val="{{ false }}">
+  <div style="background:#FFFFFF;border:1px solid #EEEEEE;border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:14px;font-weight:800;letter-spacing:-.025em;color:#212121">채권의 흐름</div>
+    <div style="display:grid;grid-template-columns:{{ railCols }};column-gap:10px;align-items:stretch">
+
+      <div style="grid-column:1;display:flex;align-items:center;gap:12px;background:#F5F5F5;border:1px solid #E6E6E6;border-radius:16px;padding:14px">
+        <div style="width:34px;height:34px;border-radius:10px;background:#E8EAF6;display:flex;align-items:center;justify-content:center;flex:none">
+          <svg width="22" height="22" viewBox="0 0 960 960" style="fill:#3949AB"><path d="M120,840L120,320L360,320L360,160L720,160L720,480L840,480L840,840L560,840L560,640L400,640L400,840L120,840ZM200,760L280,760L280,680L200,680L200,760ZM200,600L280,600L280,520L200,520L200,600ZM200,440L280,440L280,400L200,400L200,440ZM440,600L520,600L520,520L440,520L440,600ZM440,440L520,440L520,400L440,400L440,440ZM440,280L520,280L520,240L440,240L440,280ZM600,760L680,760L680,680L600,680L600,760ZM600,600L680,600L680,520L600,520L600,600ZM600,440L680,440L680,400L600,400L600,440ZM600,280L680,280L680,240L600,240L600,280ZM760,760L760,560L720,560L720,760L760,760Z"/></svg>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div style="font-size:15px;font-weight:800;letter-spacing:-.025em;color:#212121"><span style="background:#E8EAF6;box-shadow:0 -2px 0 #E8EAF6 inset;padding:0 4px;border-radius:4px;color:#283593">발행회사</span></div>
+          <div style="font-size:12px;font-weight:600;letter-spacing:-.025em;color:#757575">돈을 빌리고 <b style="color:#283593">이자를 주는</b> 쪽</div>
+        </div>
+      </div>
+
+      <div style="grid-column:1;display:flex;align-items:center;gap:10px;padding:8px 0 8px 30px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:0;flex:none">
+          <div style="width:2px;height:14px;background:#9FA8DA"></div>
+          <div style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid #9FA8DA"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:1px">
+          <div style="font-size:13px;font-weight:700;letter-spacing:-.025em;color:#424242">① A씨가 <b style="color:#283593">100만원</b>을 내고 채권을 받음</div>
+        </div>
+      </div>
+
+      <div style="grid-column:1;display:flex;align-items:center;gap:12px;background:#F5F5F5;border:1px solid #E6E6E6;border-radius:16px;padding:14px">
+        <div style="width:34px;height:34px;border-radius:999px;background:#E3F2FD;display:flex;align-items:center;justify-content:center;flex:none">
+          <svg width="22" height="22" viewBox="0 0 960 960" style="fill:#1565C0"><path d="M480,480Q414,480 367,433Q320,386 320,320Q320,254 367,207Q414,160 480,160Q546,160 593,207Q640,254 640,320Q640,386 593,433Q546,480 480,480ZM160,800L160,688Q160,654 177.5,625.5Q195,597 224,582Q286,551 350,535.5Q414,520 480,520Q546,520 610,535.5Q674,551 736,582Q765,597 782.5,625.5Q800,654 800,688L800,800L160,800Z"/></svg>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div style="font-size:15px;font-weight:800;letter-spacing:-.025em;color:#212121"><span style="background:#E3F2FD;padding:0 4px;border-radius:4px;color:#1565C0">A씨</span> · 먼저 산 사람</div>
+          <div style="font-size:12px;font-weight:600;letter-spacing:-.025em;color:#757575"><b style="color:#1565C0">급전이 필요해져</b> 되팔기로 함</div>
+        </div>
+      </div>
+
+      <div style="grid-column:1;display:flex;align-items:center;gap:10px;padding:8px 0 8px 30px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:0;flex:none">
+          <div style="width:2px;height:14px;background:#42A5F5"></div>
+          <div style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid #42A5F5"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:1px">
+          <div style="font-size:13px;font-weight:700;letter-spacing:-.025em;color:#424242">②③ 채권은 <b style="color:#00695C">나에게</b>, 대금 <b style="color:#1565C0">90만원</b>은 A씨에게</div>
+        </div>
+      </div>
+
+      <div style="grid-column:1;display:flex;align-items:center;gap:12px;background:#F5F5F5;border:1px solid #E6E6E6;border-radius:16px;padding:14px">
+        <div style="width:34px;height:34px;border-radius:999px;background:#E0F2F1;display:flex;align-items:center;justify-content:center;flex:none">
+          <svg width="22" height="22" viewBox="0 0 960 960" style="fill:#00695C"><path d="M480,480Q414,480 367,433Q320,386 320,320Q320,254 367,207Q414,160 480,160Q546,160 593,207Q640,254 640,320Q640,386 593,433Q546,480 480,480ZM160,800L160,688Q160,654 177.5,625.5Q195,597 224,582Q286,551 350,535.5Q414,520 480,520Q546,520 610,535.5Q674,551 736,582Q765,597 782.5,625.5Q800,654 800,688L800,800L160,800Z"/></svg>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div style="font-size:15px;font-weight:800;letter-spacing:-.025em;color:#212121"><span style="background:#E0F2F1;padding:0 4px;border-radius:4px;color:#00695C">나</span> · 중간에 산 사람</div>
+          <div style="font-size:12px;font-weight:600;letter-spacing:-.025em;color:#757575"><b style="color:#00695C">90만원</b>을 내고 채권의 주인이 됨</div>
+        </div>
+      </div>
+
+      <div style="grid-column:{{ railCol }};grid-row:{{ railRow }};display:{{ railDisplay }};align-items:stretch;padding:20px 0">
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;border-top:2px solid #009688;border-right:2px solid #009688;border-bottom:2px solid #009688;border-radius:0 16px 16px 0;position:relative">
+          <div style="font-size:12px;font-weight:700;letter-spacing:-.025em;color:#424242;text-align:center;line-height:1.7;padding:0 8px">④⑤ 만기<br><b style="color:#283593">액면 100만원</b><br><b style="color:#00695C">이자 5만원</b></div>
+          <div style="position:absolute;left:-1px;bottom:-6px;width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-right:7px solid #009688"></div>
+        </div>
+      </div>
+
+      <div style="grid-column:1;display:{{ bandDisplay }};flex-direction:column;gap:6px;border-top:2px solid #009688;padding:12px 2px 0;margin-top:8px">
+        <div style="font-size:13px;font-weight:700;letter-spacing:-.025em;color:#424242">④⑤ 만기에 <b style="color:#283593">발행회사</b>가 <b style="color:#00695C">나</b>에게</div>
+        <div style="font-size:13px;line-height:1.7;letter-spacing:-.025em;color:#616161"><b style="color:#283593">액면 100만원</b> + <b style="color:#00695C">이자 5만원</b>. A씨를 거치지 않고 지금 소유자에게 옵니다.</div>
+      </div>
+
+    </div>
+    <div style="display:{{ railNoteDisplay }};font-size:11px;font-weight:700;letter-spacing:-.025em;color:#00796B;text-align:right">④⑤ 발행회사 → 나 · A씨를 거치지 않습니다</div>
+    <div style="display:flex;gap:10px;background:#E0F2F1;border-radius:16px;padding:12px;margin-top:2px">
+      <div style="width:4px;border-radius:999px;background:#80CBC4"></div>
+      <div style="font-size:12px;line-height:1.65;letter-spacing:-.025em;color:#00796B">채권이 A씨에서 나에게 넘어와도 <b>발행회사의 약속은 그대로</b>입니다. 산 값이 얼마였든, 회사는 마지막 소유자에게 액면과 이자를 갚습니다.</div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isTrade }}" hint-placeholder-val="{{ false }}">
+  <div style="background:#FFFFFF;border:1px solid #EEEEEE;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:14px;font-weight:800;letter-spacing:-.025em;color:#212121">90만원에 산 채권의 만기 정산</div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div style="display:flex;justify-content:space-between"><span style="font-size:11px;font-weight:800;letter-spacing:-.025em;color:#757575">만기에 돌려받는 액면</span><span style="font-size:12px;font-weight:700;color:#212121">1,000,000원</span></div>
+      <div style="display:flex;height:22px;gap:2px">
+        <div style="width:90%;border-radius:4px;background:#BDBDBD"></div>
+        <div style="flex:1;border-radius:4px;background:#9FA8DA"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between"><span style="font-size:12px;font-weight:700;color:#616161">낸 돈 900,000원</span><span style="font-size:12px;font-weight:700;color:#283593">매수차익 100,000원</span></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid #F0F0F0;padding-top:12px">
+      <div style="display:flex;flex-direction:column"><span style="font-size:13px;font-weight:700;color:#00695C">이자 5만원 · 발행회사</span><span style="font-size:11px;font-weight:600;color:#9E9E9E">이자소득세 15.4% → −7,700원</span></div>
+      <span style="font-size:16px;font-weight:800;letter-spacing:-.025em;color:#00695C">42,300원</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div style="display:flex;flex-direction:column"><span style="font-size:13px;font-weight:700;color:#283593">매수차익 10만원 · A씨에게 싸게 산 몫</span><span style="font-size:11px;font-weight:700;color:#3949AB">세금 없음 → 전액 수령</span></div>
+      <span style="font-size:16px;font-weight:800;letter-spacing:-.025em;color:#283593">100,000원</span>
+    </div>
+    <div style="border-top:1px solid #E0E0E0;padding-top:12px;display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:13px;font-weight:700;color:#212121">세후 총수익</span>
+      <span style="font-size:16px;font-weight:800;letter-spacing:-.025em;color:#212121">142,300원</span>
+    </div>
+    <div style="background:#E0F2F1;border-radius:16px;padding:14px;display:flex;justify-content:space-between;align-items:baseline">
+      <span style="font-size:12px;font-weight:700;letter-spacing:-.025em;color:#00796B">낸 돈 90만원 기준 세후 수익률</span>
+      <span style="font-size:26px;font-weight:800;letter-spacing:-.03em;color:#00695C">15.8%</span>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isTradeVs }}" hint-placeholder-val="{{ false }}">
+  <div style="background:#FFFFFF;border:1px solid #EEEEEE;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px">
+    <div style="font-size:14px;font-weight:800;letter-spacing:-.025em;color:#212121">100만원을 1년 투자했다면?</div>
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
+          <div style="display:flex;align-items:center;gap:6px">
+            <div style="width:11px;height:11px;border-radius:3px;background:#009688;flex:none"></div>
+            <span style="font-size:15px;font-weight:800;letter-spacing:-.025em;color:#00695C">채권</span>
+            <span style="font-size:11px;font-weight:700;color:#00796B">싸게 매수 · 만기 보유</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:6px">
+            <span style="font-size:26px;font-weight:800;letter-spacing:-.03em;color:#00695C">156,953원</span>
+            <span style="font-size:12px;font-weight:800;color:#00796B">15.7%</span>
+          </div>
+        </div>
+        <div style="height:26px;border-radius:5px;background:#F0F0F0;overflow:hidden"><div style="width:100%;height:26px;border-radius:5px;background:#009688"></div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;opacity:.82">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
+          <div style="display:flex;align-items:center;gap:6px">
+            <div style="width:9px;height:9px;border-radius:3px;background:#9E9E9E;flex:none"></div>
+            <span style="font-size:13px;font-weight:700;letter-spacing:-.025em;color:#424242">예금</span>
+            <span style="font-size:11px;font-weight:600;color:#9E9E9E">5% · 만기 1회</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:6px">
+            <span style="font-size:17px;font-weight:800;letter-spacing:-.025em;color:#424242">42,300원</span>
+            <span style="font-size:11px;font-weight:700;color:#9E9E9E">4.23%</span>
+          </div>
+        </div>
+        <div style="height:16px;border-radius:4px;background:#F0F0F0;overflow:hidden"><div style="width:26.8%;height:16px;border-radius:4px;background:#9E9E9E"></div></div>
+      </div>
+    </div>
+    <div style="font-size:11px;font-weight:600;line-height:1.6;letter-spacing:-.025em;color:#9E9E9E;border-top:1px solid #F0F0F0;padding-top:10px">채권은 100만원으로 액면 111만원어치를 90% 값에 매수한 경우 — 세후 이자 46,953원 + 매수차익 110,000원.</div>
+  </div>
+</sc-if>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:460,&quot;height&quot;:420},&quot;kind&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;flow&quot;,&quot;rate&quot;,&quot;cycles&quot;,&quot;cumulative&quot;,&quot;tax&quot;,&quot;tradeFlow&quot;,&quot;trade&quot;,&quot;tradeVs&quot;],&quot;default&quot;:&quot;flow&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;who&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;savings&quot;,&quot;deposit&quot;,&quot;bond&quot;],&quot;default&quot;:&quot;bond&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;cycle&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;1&quot;,&quot;3&quot;,&quot;6&quot;,&quot;12&quot;],&quot;default&quot;:&quot;1&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;tone&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;&quot;,&quot;accent&quot;,&quot;muted&quot;],&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;layout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;&quot;,&quot;narrow&quot;],&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const kind = this.props.kind || "flow";
+    const who = this.props.who || "bond";
+    const cycle = Number(this.props.cycle || 1);
+    const P = { savings: { main: "#42A5F5", strong: "#1565C0" }, deposit: { main: "#9FA8DA", strong: "#283593" }, bond: { main: "#009688", strong: "#00695C" } }[who];
+    const months = [];
+    for (let i = 1; i <= 12; i++) {
+      let h = 0, ph = 0, c = P.main, lc = "#BDBDBD";
+      if (who === "savings") { h = Math.round((i / 12) * 104); if (i === 12) c = "#1E88E5"; lc = i === 1 || i === 12 ? "#757575" : "#BDBDBD"; }
+      if (who === "deposit") { if (i === 12) { h = 24; ph = 96; lc = "#283593"; } else { h = 6; c = "#F0F0F0"; } }
+      if (who === "bond") {
+        const pays = i % cycle === 0;
+        const per = Math.round(30 * cycle);
+        if (pays) { h = Math.min(per, 96); lc = "#00796B"; } else { h = 6; c = "#F0F0F0"; }
+        if (i === 12) ph = 128 - h - 2;
+      }
+      months.push({ n: i, h, ph, c, lc });
+    }
+    const perPay = Math.round(42300 / (12 / cycle));
+    const flowMeta = {
+      savings: { title: "적금", badge: "매달 83,333원 납입", legendA: "그 달 이자의 계산 기준", caption: "이자는 그때까지 쌓인 금액에만 붙습니다. 1월 347원 → 12월 4,167원.", total: "22,912원", hasPrincipal: false },
+      deposit: { title: "예금", badge: "처음에 100만원 예치", legendA: "이자 42,300원", caption: "만기 전에는 한 푼도 들어오지 않고, 12개월째에 원금과 이자를 함께 받습니다.", total: "42,300원", hasPrincipal: true },
+      bond: { title: "채권", badge: cycle === 12 ? "만기 일시 지급" : cycle + "개월마다 지급", legendA: "이자 " + perPay.toLocaleString() + "원", caption: cycle === 12 ? "만기에 이자를 한 번에 받습니다. 예금과 같은 모양입니다." : cycle + "개월마다 " + perPay.toLocaleString() + "원이 들어오고, 만기에 원금을 함께 받습니다.", total: "42,300원", hasPrincipal: true }
+    }[who];
+    const taxMeta = {
+      savings: { title: "적금", gross: "27,083원", net: "22,912원", tax: "−4,171원", grossPct: "54.2%", netPct: "45.8%" },
+      deposit: { title: "예금", gross: "50,000원", net: "42,300원", tax: "−7,700원", grossPct: "100%", netPct: "84.6%" },
+      bond: { title: "채권", gross: "50,000원", net: "42,300원", tax: "−7,700원", grossPct: "100%", netPct: "84.6%" }
+    }[who];
+    const cycleRows = [1, 3, 6, 12].map(c => ({
+      label: c === 12 ? "만기 일시" : c + "개월마다",
+      labelColor: c === 12 ? "#616161" : "#00695C",
+      detail: Math.round(42300 / (12 / c)).toLocaleString() + "원 × " + 12 / c + "회",
+      slots: Array.from({ length: 12 }, (_, i) => ({ c: (i + 1) % c === 0 ? (c === 12 ? "#00695C" : "#009688") : "#F0F0F0" }))
+    }));
+    const tone = this.props.tone || "";
+    const toneStyle = {
+      accent: { bg: "#FFFFFF", border: "#B2DFDB", shadow: "0 6px 18px rgba(0,150,136,.10)", total: "#E0F2F1" },
+      muted: { bg: "#FCFCFC", border: "#F0F0F0", shadow: "none", total: "#F7F7F7" },
+      "": { bg: "#FFFFFF", border: "#EEEEEE", shadow: "none", total: "#FAFAFA" }
+    }[tone];
+    return {
+      cardBg: toneStyle.bg, cardBorder: toneStyle.border, cardShadow: toneStyle.shadow, totalBg: toneStyle.total,
+      isTradeFlow: kind === "tradeFlow",
+      railCols: this.props.layout === "narrow" ? "1fr" : "1fr 116px",
+      railCol: this.props.layout === "narrow" ? "1" : "2",
+      railRow: this.props.layout === "narrow" ? "auto" : "1 / 6",
+      railDisplay: this.props.layout === "narrow" ? "none" : "flex",
+      bandDisplay: this.props.layout === "narrow" ? "flex" : "none",
+      railNoteDisplay: this.props.layout === "narrow" ? "none" : "block",
+      isFlow: kind === "flow", isRate: kind === "rate", isCycles: kind === "cycles",
+      isCumulative: kind === "cumulative", isTax: kind === "tax", isTrade: kind === "trade", isTradeVs: kind === "tradeVs",
+      mainColor: P.main, strongColor: P.strong, months, cycleRows,
+      title: kind === "tax" ? taxMeta.title : flowMeta.title,
+      badge: flowMeta.badge, legendA: flowMeta.legendA, caption: flowMeta.caption, total: flowMeta.total, hasPrincipal: flowMeta.hasPrincipal,
+      gross: taxMeta.gross, net: taxMeta.net, tax: taxMeta.tax, grossPct: taxMeta.grossPct, netPct: taxMeta.netPct
+    };
+  }
+}
+</script>
+</body>
+</html>

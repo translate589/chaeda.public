@@ -15,6 +15,9 @@ window.CHAEDA_CONTENT = {
     baseUrl: 'https://chaeda.github.io/chaeda-support',
     nav: [
       { key: 'home', label: '소개', file: 'index.html' },
+      { key: 'guides', label: '채권 가이드', children: [
+        { key: 'bond-yield-structure', label: '채권 수익 구조 가이드', file: 'guides/bond-yield-structure/index.html' }
+      ] },
       { key: 'support', label: '지원 · 문의', file: 'support.html' },
       { key: 'privacy', label: '개인정보처리방침', file: 'privacy.html' }
     ]

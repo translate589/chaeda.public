@@ -28,19 +28,59 @@
   };
 
   /* ── 공통 헤더 / 푸터 ─────────────────────── */
+  function navFlat(items) {
+    var out = [];
+    items.forEach(function (n) {
+      if (n.children) { out = out.concat(n.children); } else { out.push(n); }
+    });
+    return out;
+  }
+
   function chrome(page) {
     var nav = C.site.nav.map(function (n) {
+      if (n.children) {
+        var active = n.children.some(function (c) { return c.key === page; });
+        var items = n.children.map(function (c) {
+          return '<a href="' + c.file + '"' + (c.key === page ? ' aria-current="page"' : '') + '>' + esc(c.label) + '</a>';
+        }).join('');
+        return '<div class="navdrop' + (active ? ' is-active' : '') + '">' +
+          '<button type="button" class="navdrop-btn" aria-haspopup="true" aria-expanded="false">' + esc(n.label) +
+          ico('expand_more', 'navdrop-caret') + '</button>' +
+          '<div class="navdrop-menu">' + items + '</div></div>';
+      }
       return '<a href="' + n.file + '"' + (n.key === page ? ' aria-current="page"' : '') + '>' + esc(n.label) + '</a>';
     }).join('');
     el('hdr').innerHTML = '<div class="wrap">' +
       '<a class="brand" href="index.html"><span class="mark">' + esc(C.site.logoText) + '</span>' +
       '<span class="brandname">' + esc(C.site.name) + '</span></a>' +
       '<nav class="nav">' + nav + '</nav></div>';
+    Array.prototype.forEach.call(el('hdr').querySelectorAll('.navdrop-btn'), function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var drop = btn.parentNode;
+        var wasOpen = drop.classList.contains('is-open');
+        Array.prototype.forEach.call(el('hdr').querySelectorAll('.navdrop.is-open'), function (d) {
+          d.classList.remove('is-open');
+          d.querySelector('.navdrop-btn').setAttribute('aria-expanded', 'false');
+        });
+        if (!wasOpen) {
+          drop.classList.add('is-open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+    document.addEventListener('click', function () {
+      Array.prototype.forEach.call(el('hdr').querySelectorAll('.navdrop.is-open'), function (d) {
+        d.classList.remove('is-open');
+        d.querySelector('.navdrop-btn').setAttribute('aria-expanded', 'false');
+      });
+    });
+    var flat = navFlat(C.site.nav);
     el('ftr').innerHTML = '<div class="wrap"><div class="lines">' +
       C.footer.lines.map(esc).join('<br>') + '</div><nav>' +
-      C.site.nav.map(function (n) { return '<a href="' + n.file + '">' + esc(n.label) + '</a>'; }).join('') +
+      flat.map(function (n) { return '<a href="' + n.file + '">' + esc(n.label) + '</a>'; }).join('') +
       '</nav></div>';
-    var cur = C.site.nav.filter(function (n) { return n.key === page; })[0];
+    var cur = flat.filter(function (n) { return n.key === page; })[0];
     document.title = C.site.name + (cur ? ' · ' + cur.label : '');
   }
 
