@@ -13,7 +13,7 @@
   --white:#fff;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 body{margin:0;background:var(--white);color:var(--g900);
   font-family:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;
   -webkit-font-smoothing:antialiased;font-feature-settings:'tnum';word-break:keep-all;overflow-wrap:break-word}
@@ -23,10 +23,21 @@ button{font:inherit;border:0;background:none;padding:0}
 h1,h2,h3{margin:0;letter-spacing:-.025em}
 .ms{font-family:'Material Symbols Outlined';font-weight:400;line-height:1;
   font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;user-select:none}
+/* 아이콘 폰트를 못 받았을 때(사내망 등) ligature 원문이 글자로 노출되는 것을 막는다 — app.js guardIconFont */
+.no-ms .ms{display:none}
 .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
 
+/* 키보드 포커스 — button 의 기본 테두리를 지웠기 때문에 명시하지 않으면 포커스가 보이지 않는다 */
+:focus-visible{outline:2px solid var(--mint500);outline-offset:2px;border-radius:4px}
+
+/* 본문 바로가기 — 평소엔 화면 밖, 포커스되면 나타난다 */
+.skip{position:absolute;left:12px;top:-64px;z-index:40;background:var(--mint500);color:#fff;
+  font-size:14px;font-weight:700;padding:10px 16px;border-radius:12px;transition:top .15s ease}
+.skip:focus{top:12px;color:#fff}
+
 /* ── header ─────────────────────────────── */
-.hdr{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);
+/* z-index 30 — 가이드 페이지의 자체 섹션 내비(sticky, z-index 20)보다 위에 있어야 한다 */
+.hdr{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.92);
   backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--g200)}
 .hdr .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;height:64px}
 .brand{display:flex;align-items:center;gap:10px}
@@ -71,10 +82,12 @@ h1,h2,h3{margin:0;letter-spacing:-.025em}
 .btn.ghost:hover{background:rgba(255,255,255,.12);color:#fff}
 .note{margin-top:14px;font-size:12px;color:rgba(255,255,255,.75)}
 /* ── sections ───────────────────────────── */
-.sec{padding:88px 0}
+/* 가이드 페이지도 .sec 을 쓰지만 그쪽은 카드형이라 이 규칙들이 적용되면 안 된다 —
+ * body[data-guide] 로 제외한다(작업: 가이드에 공용 헤더 붙이기). */
+body:not([data-guide]) .sec{padding:88px 0}
 .sec.tint{background:var(--g100)}
-.sec+.sec{border-top:1px solid var(--g200)}
-.sec.tint+.sec,.sec+.sec.tint{border-top:0}
+body:not([data-guide]) .sec+.sec{border-top:1px solid var(--g200)}
+body:not([data-guide]) .sec.tint+.sec,body:not([data-guide]) .sec+.sec.tint{border-top:0}
 .kicker{font-size:14px;font-weight:700;color:var(--mint600)}
 .sec h2{font-size:34px;font-weight:800;letter-spacing:-.03em}
 .sec .kicker+h2{margin-top:10px}
@@ -257,16 +270,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 .ftr{background:var(--g100);border-top:1px solid var(--g200)}
 .ftr .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:36px 24px}
 .ftr .lines{font-size:13.5px;line-height:1.8;color:var(--g700)}
+.ftr .copy{display:block;margin-top:10px;font-size:12.5px;color:var(--g500)}
 .ftr nav{display:flex;gap:20px;font-size:13.5px;font-weight:600}
 .ftr nav a{color:var(--g700)}
 .ftr nav a:hover{color:var(--mint600)}
 
-@media (max-width:640px){
-  .nav{gap:0}
-  .nav a,.navdrop-btn{padding-left:8px;padding-right:8px;font-size:13px}
-  .brandname{display:none}
-}
-
+/* max-width 미디어쿼리는 내림차순으로 둔다 — 좁은 쪽이 뒤에 와야 넓은 쪽을 덮어쓴다 */
 @media (max-width:920px){
   .hero .wrap{padding-top:56px;padding-bottom:56px}
   .hero h1{font-size:38px}
@@ -275,5 +284,48 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
   .frail{width:100%}
   .duo,.trio,.pv{grid-template-columns:1fr}
   .toc{position:static}
-  .sec{padding:56px 0}
+  body:not([data-guide]) .sec{padding:56px 0}
+}
+
+@media (max-width:640px){
+  .nav{gap:0}
+  .nav a,.navdrop-btn{padding-left:8px;padding-right:8px;font-size:13px}
+  .brandname{display:none}
+  .ftr .wrap{flex-direction:column;gap:16px}
+  .ftr nav{flex-wrap:wrap;gap:12px 18px}
+}
+
+/* ── 다크모드 ────────────────────────────────
+ * 컴포넌트 CSS 는 전부 토큰을 참조하므로 여기서 토큰만 뒤집는다.
+ * 민트는 어두운 배경에서 대비가 떨어지므로 밝은 단계로 당긴다. */
+@media (prefers-color-scheme:dark){
+  :root{
+    --white:#16181A;
+    --g100:#1F2225; --g200:#2A2E32; --g300:#3A3F45; --g400:#565C63;
+    --g500:#8A9199; --g600:#A6ADB4; --g700:#C2C8CE; --g800:#DDE1E5; --g900:#F2F4F6;
+    /* mint500 은 흰 글자를 얹는 "배경"으로 쓰이므로(히어로·로고칩·기본 버튼) 브랜드 값을 유지한다.
+       반대로 mint600/700 은 본문 위 "글자"로 쓰이므로 어두운 배경에서 읽히도록 밝게 올린다. */
+    --mint100:#123B36; --mint200:#17514A; --mint300:#4DB6AC; --mint400:#66C6BC;
+    --mint500:#009688; --mint600:#7FCBC3; --mint700:#A7DAD5; --mint900:#CDEAE6;
+    --sky100:#152A3D; --sky400:#64B5F6; --sky600:#90CAF9; --sky800:#BBDEFB;
+    --lav100:#1E2140; --lav300:#9FA8DA; --lav600:#B0B8E8; --lav700:#C5CBEF;
+    --peach100:#3A1B27; --peach600:#F48FB1;
+    --amber100:#3A2A12; --amber900:#FFB74D;
+  }
+  .hdr{background:rgba(22,24,26,.92)}
+  /* 히어로는 두 모드 모두 민트 배경이다 — 그 안의 흰 버튼 글자는 라이트 민트를 유지해야 읽힌다 */
+  .hero .btn.primary,.btn.primary{color:#00695C}
+
+  /* 가이드 페이지 본문은 색을 하드코딩한 생성물이라 다크모드로 뒤집히지 않는다.
+     헤더·푸터만 어두우면 반쪽짜리로 보이므로, 이 페이지는 라이트로 통일한다. */
+  body[data-guide]{
+    color-scheme:light;
+    --white:#fff;
+    --g100:#F5F5F5; --g200:#EEEEEE; --g300:#E0E0E0; --g400:#BDBDBD;
+    --g500:#9E9E9E; --g600:#757575; --g700:#616161; --g800:#424242; --g900:#212121;
+    --mint100:#E0F2F1; --mint200:#B2DFDB; --mint300:#80CBC4; --mint400:#4DB6AC;
+    --mint500:#009688; --mint600:#00796B; --mint700:#00695C; --mint900:#004D40;
+  }
+  body[data-guide] .hdr{background:rgba(255,255,255,.92)}
+  body[data-guide] .mark{color:#fff}
 }

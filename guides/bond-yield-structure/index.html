@@ -1,11 +1,38 @@
 <!DOCTYPE html>
-<html>
+<!-- 주의: 이 파일은 dc-runtime 상위 소스(bond-yield-site.dc.html)에서 재생성되는 산출물입니다.
+     재생성 시 아래 "사이트 공용 chrome" 관련 수정이 사라지므로 다시 적용해야 합니다.
+     (주석 안에 태그를 그대로 쓰면 dc-runtime 파서가 오작동하므로 이름만 적습니다.)
+       1. html 태그의 lang="ko" 와 head 의 파비콘/OG/canonical
+       2. ../../styles.css, Material Symbols, ../../content.js, ../../app.js 로드
+       3. body 의 data-page / data-base / data-guide 속성
+       4. x-dc 앞뒤의 hdr / ftr 마운트와 main 래퍼
+       5. 문서 끝의 dc-override 스타일 (sticky 오프셋 · dc-root 높이)
+       6. 자체 섹션 내비의 top:0 을 top:64px 로 -->
+<html lang="ko">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="적금·예금·채권을 같은 조건에 놓고 이자가 붙는 기준, 받는 시점, 중도매매까지 10단계로 비교합니다.">
+<meta name="theme-color" content="#009688">
+<link rel="canonical" href="https://translate589.github.io/chaeda.public/guides/bond-yield-structure/">
+<link rel="icon" href="../../favicon-32.png" sizes="32x32">
+<link rel="icon" href="../../favicon-512.png" sizes="512x512">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="채다">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:title" content="채권의 수익구조 — 적금·예금과 무엇이 다른가">
+<meta property="og:description" content="적금·예금·채권을 같은 조건에 놓고 이자가 붙는 기준, 받는 시점, 중도매매까지 10단계로 비교합니다.">
+<meta property="og:url" content="https://translate589.github.io/chaeda.public/guides/bond-yield-structure/">
+<meta property="og:image" content="https://translate589.github.io/chaeda.public/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0..1,0">
+<link rel="stylesheet" href="../../styles.css">
 <script src="./support.js"></script>
 </head>
-<body>
+<body data-page="bond-yield-structure" data-base="../../" data-guide>
+<header class="hdr" id="hdr"></header>
+<main id="main">
 <x-dc>
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,7 +43,7 @@
   body { margin:0; background:#FAFAFA; font-family:"Pretendard",-apple-system,sans-serif; -webkit-font-smoothing:antialiased; font-feature-settings:"tnum"; }
   a { color:#00796B; text-decoration:none; }
   a:hover { color:#00695C; }
-  .sec { scroll-margin-top:76px; }
+  .sec { scroll-margin-top:140px; }
   @media (max-width:900px) {
     .row { flex-direction:column !important; gap:20px !important; }
     .row > .aside { width:100% !important; }
@@ -31,7 +58,8 @@
 
 <div style="min-height:100vh;background:#FAFAFA">
 
-  <div style="position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid #EEEEEE">
+  <!-- top:64px — 사이트 공용 헤더(.hdr, 높이 64px) 아래에 붙는 섹션 서브내비 -->
+  <div style="position:sticky;top:64px;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid #EEEEEE">
     <div style="max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:20px">
       <a href="#top" style="font-size:15px;font-weight:800;letter-spacing:-.025em;color:#212121;flex:none">채권의 수익구조</a>
       <div class="navwrap" style="flex:1;display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end">
@@ -273,5 +301,16 @@ class Component extends DCLogic {
   }
 }
 </script>
+</main>
+
+<footer class="ftr" id="ftr"></footer>
+<!-- dc-runtime 은 $preview 가 없으면 부팅 시 html,body{height:100%} 와 #dc-root{height:100%} 를
+     head 에 주입한다. 그대로 두면 헤더·푸터를 더한 만큼 화면이 넘친다. -->
+<style>
+  html, body { height:auto !important; }
+  #dc-root { height:auto !important; }
+</style>
+<script src="../../content.js"></script>
+<script src="../../app.js"></script>
 </body>
 </html>

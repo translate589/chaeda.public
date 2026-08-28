@@ -9,7 +9,15 @@
   };
   var el = function (id) { return document.getElementById(id); };
   var won = function (n) { return n.toLocaleString('ko-KR') + '원'; };
-  var ico = function (name, cls) { return '<span class="ms' + (cls ? ' ' + cls : '') + '">' + name + '</span>'; };
+  /* 아이콘은 항상 장식이다 — aria-hidden 이 없으면 스크린리더가 ligature 원문("chevron_right")을 읽는다. */
+  var ico = function (name, cls) {
+    return '<span class="ms' + (cls ? ' ' + cls : '') + '" aria-hidden="true">' + name + '</span>';
+  };
+
+  /* 페이지 깊이 보정. 하위 폴더 페이지는 <body data-base="../../"> 로 선언한다.
+   * <base href> 는 가이드의 #s1 같은 프래그먼트 링크까지 바꿔버리므로 쓰지 않는다. */
+  var BASE = document.body.getAttribute('data-base') || '';
+  var href = function (file) { return BASE + file; };
 
   /* 아이콘 매핑 (구조 정보 — 문구 아님) */
   var FEATURE_ICON = {
@@ -28,60 +36,66 @@
   };
 
   /* ── 공통 헤더 / 푸터 ─────────────────────── */
-  function navFlat(items) {
-    var out = [];
-    items.forEach(function (n) {
-      if (n.children) { out = out.concat(n.children); } else { out.push(n); }
+  function closeDrops(hdr) {
+    Array.prototype.forEach.call(hdr.querySelectorAll('.navdrop.is-open'), function (d) {
+      d.classList.remove('is-open');
+      d.querySelector('.navdrop-btn').setAttribute('aria-expanded', 'false');
     });
-    return out;
   }
 
   function chrome(page) {
-    var nav = C.site.nav.map(function (n) {
-      if (n.children) {
-        var active = n.children.some(function (c) { return c.key === page; });
-        var items = n.children.map(function (c) {
-          return '<a href="' + c.file + '"' + (c.key === page ? ' aria-current="page"' : '') + '>' + esc(c.label) + '</a>';
-        }).join('');
-        return '<div class="navdrop' + (active ? ' is-active' : '') + '">' +
-          '<button type="button" class="navdrop-btn" aria-haspopup="true" aria-expanded="false">' + esc(n.label) +
-          ico('expand_more', 'navdrop-caret') + '</button>' +
-          '<div class="navdrop-menu">' + items + '</div></div>';
-      }
-      return '<a href="' + n.file + '"' + (n.key === page ? ' aria-current="page"' : '') + '>' + esc(n.label) + '</a>';
-    }).join('');
-    el('hdr').innerHTML = '<div class="wrap">' +
-      '<a class="brand" href="index.html"><span class="mark">' + esc(C.site.logoText) + '</span>' +
-      '<span class="brandname">' + esc(C.site.name) + '</span></a>' +
-      '<nav class="nav">' + nav + '</nav></div>';
-    Array.prototype.forEach.call(el('hdr').querySelectorAll('.navdrop-btn'), function (btn) {
-      btn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        var drop = btn.parentNode;
-        var wasOpen = drop.classList.contains('is-open');
-        Array.prototype.forEach.call(el('hdr').querySelectorAll('.navdrop.is-open'), function (d) {
-          d.classList.remove('is-open');
-          d.querySelector('.navdrop-btn').setAttribute('aria-expanded', 'false');
-        });
-        if (!wasOpen) {
-          drop.classList.add('is-open');
-          btn.setAttribute('aria-expanded', 'true');
+    var hdr = el('hdr');
+    var ftr = el('ftr');
+
+    if (hdr) {
+      var nav = C.site.nav.map(function (n) {
+        if (n.children) {
+          var active = n.children.some(function (c) { return c.key === page; });
+          var items = n.children.map(function (c) {
+            return '<a href="' + href(c.file) + '"' + (c.key === page ? ' aria-current="page"' : '') + '>' + esc(c.label) + '</a>';
+          }).join('');
+          return '<div class="navdrop' + (active ? ' is-active' : '') + '">' +
+            '<button type="button" class="navdrop-btn" aria-haspopup="true" aria-expanded="false">' + esc(n.label) +
+            ico('expand_more', 'navdrop-caret') + '</button>' +
+            '<div class="navdrop-menu">' + items + '</div></div>';
         }
+        return '<a href="' + href(n.file) + '"' + (n.key === page ? ' aria-current="page"' : '') + '>' + esc(n.label) + '</a>';
+      }).join('');
+      hdr.innerHTML = '<a class="skip" href="#main">본문 바로가기</a><div class="wrap">' +
+        '<a class="brand" href="' + href('index.html') + '"><span class="mark" aria-hidden="true">' + esc(C.site.logoText) + '</span>' +
+        '<span class="brandname">' + esc(C.site.name) + '</span></a>' +
+        '<nav class="nav" aria-label="주요 메뉴">' + nav + '</nav></div>';
+      Array.prototype.forEach.call(hdr.querySelectorAll('.navdrop-btn'), function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var drop = btn.parentNode;
+          var wasOpen = drop.classList.contains('is-open');
+          closeDrops(hdr);
+          if (!wasOpen) {
+            drop.classList.add('is-open');
+            btn.setAttribute('aria-expanded', 'true');
+          }
+        });
       });
-    });
-    document.addEventListener('click', function () {
-      Array.prototype.forEach.call(el('hdr').querySelectorAll('.navdrop.is-open'), function (d) {
-        d.classList.remove('is-open');
-        d.querySelector('.navdrop-btn').setAttribute('aria-expanded', 'false');
+      document.addEventListener('click', function () { closeDrops(hdr); });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { closeDrops(hdr); }
       });
-    });
-    var flat = navFlat(C.site.nav);
-    el('ftr').innerHTML = '<div class="wrap"><div class="lines">' +
-      C.footer.lines.map(esc).join('<br>') + '</div><nav>' +
-      flat.map(function (n) { return '<a href="' + n.file + '">' + esc(n.label) + '</a>'; }).join('') +
-      '</nav></div>';
-    var cur = flat.filter(function (n) { return n.key === page; })[0];
-    document.title = C.site.name + (cur ? ' · ' + cur.label : '');
+    }
+
+    if (ftr) {
+      ftr.innerHTML = '<div class="wrap"><div class="lines">' +
+        C.footer.lines.map(esc).join('<br>') +
+        '<span class="copy">' + esc(C.footer.copyright) + '</span>' +
+        '</div><nav aria-label="사이트 정보">' +
+        C.footer.nav.map(function (n) {
+          return '<a href="' + href(n.file) + '">' + esc(n.label) + '</a>';
+        }).join('') +
+        '</nav></div>';
+    }
+    /* document.title 은 각 페이지의 정적 <title> 이 단일 출처다.
+     * 여기서 덮어쓰면 크롤러가 보는 값과 사용자가 보는 값이 갈라지고,
+     * 가이드 페이지에서는 dc-runtime 의 <helmet> title 과 경쟁한다. */
   }
 
   /* ── 프리뷰 상태 ──────────────────────────── */
@@ -142,7 +156,7 @@
         '<div style="margin-top:12px;display:flex;justify-content:space-between;align-items:baseline">' +
         '<span style="font-size:12px;color:var(--g600)">' + esc(S.amountLabel) + '</span>' +
         '<span style="font-size:17px;font-weight:800">' + won(principal) + '</span></div>' +
-        '<input type="range" id="sim" min="' + S.min + '" max="' + S.max + '" step="' + S.step + '" value="' + state.sim + '">' +
+        '<input type="range" id="sim" aria-label="' + esc(S.label) + '" min="' + S.min + '" max="' + S.max + '" step="' + S.step + '" value="' + state.sim + '">' +
         '<div class="stack" style="gap:8px;margin-top:8px">' +
         '<div class="kv"><span>' + esc(S.interestLabel) + '</span><b style="color:var(--mint600)">+' + won(interest) + '</b></div>' +
         '<div class="kv"><span>' + esc(S.totalLabel) + '</span><b>' + won(principal + interest) + '</b></div></div>' +
@@ -265,15 +279,18 @@
     el('status').innerHTML = '<span>' + esc(C.preview.statusTime) + '</span>' +
       '<span style="display:flex;gap:4px;align-items:center">' + ico('signal_cellular_alt', '') +
       ico('wifi', '') + ico('battery_full', '') + '</span>';
+    /* aria-selected 는 tab 역할 위에서만 유효하다 — role 없이 쓰면 무시된다. */
+    el('tabbar').setAttribute('role', 'tablist');
     el('tabbar').innerHTML = C.preview.tabs.map(function (t) {
-      return '<button class="tab" data-tab="' + esc(t.key) + '">' +
+      return '<button class="tab" role="tab" data-tab="' + esc(t.key) + '">' +
         ico(TAB_ICON[t.key] || 'circle') + '<span>' + esc(t.label) + '</span></button>';
     }).join('');
+    el('frail').setAttribute('role', 'tablist');
     el('frail').innerHTML = C.features.map(function (f) {
-      return '<button class="fitem" data-feature="' + esc(f.key) + '">' +
+      return '<button class="fitem" role="tab" data-feature="' + esc(f.key) + '">' +
         '<span class="icn">' + ico(FEATURE_ICON[f.key] || 'circle') + '</span>' +
         '<span style="flex:1"><h3>' + esc(f.title) + '</h3><p>' + esc(f.body) + '</p></span>' +
-        '<span class="arw ms">chevron_right</span></button>';
+        '<span class="arw ms" aria-hidden="true">chevron_right</span></button>';
     }).join('');
     el('notices').innerHTML = C.notices.map(function (n) {
       return '<div class="pane' + (n.strong ? ' strong' : '') + '"><h3>' + esc(n.title) + '</h3><p>' + esc(n.body) + '</p></div>';
@@ -316,7 +333,7 @@
     el('faqLabel').textContent = S.faqLabel;
     el('faq').innerHTML = S.faqs.map(function (f, i) {
       return '<details' + (i === 0 ? ' open' : '') + '><summary>' + esc(f.q) +
-        '<span class="ms">expand_more</span></summary><p>' + esc(f.a) + '</p></details>';
+        '<span class="ms" aria-hidden="true">expand_more</span></summary><p>' + esc(f.a) + '</p></details>';
     }).join('');
     el('blocks').innerHTML = S.blocks.map(function (b) {
       return '<div class="pane' + (b.strong ? ' strong' : '') + '"><h3>' + esc(b.title) + '</h3>' +
@@ -334,8 +351,14 @@
       return '<p class="lede">' + esc(p) + '</p>';
     }).join('');
     el('tocLabel').textContent = P.tocLabel;
+    /* 앵커는 제목에서 뽑은 슬러그를 쓴다. 인덱스(#s0…)로 두면 섹션을 하나 끼워넣는 순간
+     * 밖에서 걸어둔 딥링크가 조용히 다른 조항을 가리킨다. */
+    function slug(s, i) {
+      var m = String(s.title).match(/^\s*(\d+)\./);
+      return m ? 's' + m[1] : 's' + (i + 1);
+    }
     el('toc').innerHTML = P.sections.map(function (s, i) {
-      return '<a href="#s' + i + '">' + esc(s.title) + '</a>';
+      return '<a href="#' + slug(s, i) + '">' + esc(s.title) + '</a>';
     }).join('');
 
     function item(it) {
@@ -354,22 +377,41 @@
       if (b.type === 'ol') return '<ol>' + b.items.map(item).join('') + '</ol>';
       if (b.type === 'ul') return '<ul>' + b.items.map(item).join('') + '</ul>';
       if (b.type === 'table') {
-        return '<div class="tbl">' + b.rows.map(function (r) {
-          return '<div class="tr" style="grid-template-columns:' + esc(b.cols) + '">' +
-            r.map(function (c) { return '<div class="td">' + esc(c) + '</div>'; }).join('') + '</div>';
+        /* CSS grid 로 그리되 표 의미는 role 로 준다 — 그리드 div 만으로는
+         * 스크린리더에 행/열 관계가 전혀 전달되지 않는다. 첫 행은 헤더로 취급한다. */
+        return '<div class="tbl" role="table">' + b.rows.map(function (r, ri) {
+          var cell = ri === 0 ? 'columnheader' : 'cell';
+          return '<div class="tr" role="row" style="grid-template-columns:' + esc(b.cols) + '">' +
+            r.map(function (c) {
+              return '<div class="td" role="' + cell + '">' + esc(c) + '</div>';
+            }).join('') + '</div>';
         }).join('') + '</div>';
       }
       return '';
     }
 
     el('psecs').innerHTML = P.sections.map(function (s, i) {
-      return '<section class="psec"><h2 id="s' + i + '">' + esc(s.title) + '</h2>' +
+      return '<section class="psec"><h2 id="' + slug(s, i) + '">' + esc(s.title) + '</h2>' +
         (s.blocks || []).map(block).join('') + '</section>';
     }).join('');
   }
 
+  /* Material Symbols 는 ligature 폰트라, Google Fonts 가 막힌 망(사내·학교)에서는
+   * 아이콘 자리에 "chevron_right" 같은 원문이 그대로 노출된다. 로드 실패를 감지해 숨긴다. */
+  function guardIconFont() {
+    if (!document.fonts || !document.fonts.load) { return; }
+    document.fonts.load('24px "Material Symbols Outlined"').then(function () {
+      if (!document.fonts.check('24px "Material Symbols Outlined"')) {
+        document.documentElement.classList.add('no-ms');
+      }
+    })['catch'](function () {
+      document.documentElement.classList.add('no-ms');
+    });
+  }
+
   var page = document.body.dataset.page;
   chrome(page);
+  guardIconFont();
   if (page === 'home') home();
   if (page === 'support') support();
   if (page === 'privacy') privacy();

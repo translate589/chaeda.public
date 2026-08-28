@@ -12,14 +12,14 @@ window.CHAEDA_CONTENT = {
     name: '채다',
     logoText: '채',
     tagline: '채권 정보 · 관리 앱',
-    baseUrl: 'https://chaeda.github.io/chaeda-support',
+    baseUrl: 'https://translate589.github.io/chaeda.public',
+    /* 헤더 nav. 법적 고지(개인정보처리방침)는 여기 두지 않고 footer.nav 에만 둡니다. */
     nav: [
       { key: 'home', label: '소개', file: 'index.html' },
       { key: 'guides', label: '채권 가이드', children: [
         { key: 'bond-yield-structure', label: '채권 수익 구조 가이드', file: 'guides/bond-yield-structure/index.html' }
       ] },
-      { key: 'support', label: '지원 · 문의', file: 'support.html' },
-      { key: 'privacy', label: '개인정보처리방침', file: 'privacy.html' }
+      { key: 'support', label: '지원 · 문의', file: 'support.html' }
     ]
   },
 
@@ -368,6 +368,14 @@ window.CHAEDA_CONTENT = {
 
   /* ── 푸터 ─────────────────────────────────── */
   footer: {
-    lines: ['채다 · 개인 개발자 김유현', 'chaeda.official@gmail.com']
+    lines: ['채다 · 개인 개발자 김유현', 'chaeda.official@gmail.com'],
+    copyright: '© 2026 채다(Chaeda)',
+    /* 푸터 nav — 헤더에 없는 법적 고지를 포함한 전체 목록 */
+    nav: [
+      { key: 'home', label: '소개', file: 'index.html' },
+      { key: 'bond-yield-structure', label: '채권 수익 구조 가이드', file: 'guides/bond-yield-structure/index.html' },
+      { key: 'support', label: '지원 · 문의', file: 'support.html' },
+      { key: 'privacy', label: '개인정보처리방침', file: 'privacy.html' }
+    ]
   }
 };
