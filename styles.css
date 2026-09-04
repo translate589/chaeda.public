@@ -294,38 +294,3 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
   .ftr .wrap{flex-direction:column;gap:16px}
   .ftr nav{flex-wrap:wrap;gap:12px 18px}
 }
-
-/* ── 다크모드 ────────────────────────────────
- * 컴포넌트 CSS 는 전부 토큰을 참조하므로 여기서 토큰만 뒤집는다.
- * 민트는 어두운 배경에서 대비가 떨어지므로 밝은 단계로 당긴다. */
-@media (prefers-color-scheme:dark){
-  :root{
-    --white:#16181A;
-    --g100:#1F2225; --g200:#2A2E32; --g300:#3A3F45; --g400:#565C63;
-    --g500:#8A9199; --g600:#A6ADB4; --g700:#C2C8CE; --g800:#DDE1E5; --g900:#F2F4F6;
-    /* mint500 은 흰 글자를 얹는 "배경"으로 쓰이므로(히어로·로고칩·기본 버튼) 브랜드 값을 유지한다.
-       반대로 mint600/700 은 본문 위 "글자"로 쓰이므로 어두운 배경에서 읽히도록 밝게 올린다. */
-    --mint100:#123B36; --mint200:#17514A; --mint300:#4DB6AC; --mint400:#66C6BC;
-    --mint500:#009688; --mint600:#7FCBC3; --mint700:#A7DAD5; --mint900:#CDEAE6;
-    --sky100:#152A3D; --sky400:#64B5F6; --sky600:#90CAF9; --sky800:#BBDEFB;
-    --lav100:#1E2140; --lav300:#9FA8DA; --lav600:#B0B8E8; --lav700:#C5CBEF;
-    --peach100:#3A1B27; --peach600:#F48FB1;
-    --amber100:#3A2A12; --amber900:#FFB74D;
-  }
-  .hdr{background:rgba(22,24,26,.92)}
-  /* 히어로는 두 모드 모두 민트 배경이다 — 그 안의 흰 버튼 글자는 라이트 민트를 유지해야 읽힌다 */
-  .hero .btn.primary,.btn.primary{color:#00695C}
-
-  /* 가이드 페이지 본문은 색을 하드코딩한 생성물이라 다크모드로 뒤집히지 않는다.
-     헤더·푸터만 어두우면 반쪽짜리로 보이므로, 이 페이지는 라이트로 통일한다. */
-  body[data-guide]{
-    color-scheme:light;
-    --white:#fff;
-    --g100:#F5F5F5; --g200:#EEEEEE; --g300:#E0E0E0; --g400:#BDBDBD;
-    --g500:#9E9E9E; --g600:#757575; --g700:#616161; --g800:#424242; --g900:#212121;
-    --mint100:#E0F2F1; --mint200:#B2DFDB; --mint300:#80CBC4; --mint400:#4DB6AC;
-    --mint500:#009688; --mint600:#00796B; --mint700:#00695C; --mint900:#004D40;
-  }
-  body[data-guide] .hdr{background:rgba(255,255,255,.92)}
-  body[data-guide] .mark{color:#fff}
-}
