@@ -8,26 +8,25 @@
 <meta name="theme-color" content="#009688">
 <meta name="robots" content="noindex">
 <!-- GitHub Pages 는 404 를 원래 URL 그대로 서빙하므로(/guides/오타/ 등) 상대경로를 쓰면
-     자산과 링크가 전부 그 경로 기준으로 깨진다. 여기만 절대경로를 쓴다.
-     커스텀 도메인을 붙이면 아래 /chaeda.public/ 접두사를 모두 제거할 것. -->
-<link rel="icon" href="/chaeda.public/favicon-32.png" sizes="32x32">
-<link rel="apple-touch-icon" href="/chaeda.public/apple-touch-icon.png">
+     자산과 링크가 전부 그 경로 기준으로 깨진다. 여기만 루트 절대경로를 쓴다. -->
+<link rel="icon" href="/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0..1,0">
-<link rel="stylesheet" href="/chaeda.public/styles.css">
+<link rel="stylesheet" href="/styles.css">
 </head>
-<body data-page="404" data-base="/chaeda.public/">
+<body data-page="404" data-base="/">
 <header class="hdr" id="hdr"></header>
 <main id="main">
   <div class="wrap" style="min-height:52vh;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:18px;padding-top:64px;padding-bottom:64px">
     <div style="font-size:15px;font-weight:700;color:var(--mint600)">404</div>
     <h1 style="font-size:34px;font-weight:800">페이지를 찾을 수 없습니다</h1>
     <p style="margin:0;font-size:16px;line-height:1.7;color:var(--g700)">주소가 바뀌었거나 삭제된 페이지예요. 위 메뉴에서 원하는 곳으로 이동할 수 있어요.</p>
-    <a class="btn primary" href="/chaeda.public/index.html" style="background:var(--mint500);color:#fff">채다 소개로 이동</a>
+    <a class="btn primary" href="/" style="background:var(--mint500);color:#fff">채다 소개로 이동</a>
   </div>
 </main>
 <footer class="ftr" id="ftr"></footer>
-<script src="/chaeda.public/content.js"></script>
-<script src="/chaeda.public/app.js"></script>
+<script src="/content.js"></script>
+<script src="/app.js"></script>
 </body>
 </html>

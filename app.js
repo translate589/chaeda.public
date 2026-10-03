@@ -9,6 +9,7 @@
   };
   var el = function (id) { return document.getElementById(id); };
   var won = function (n) { return n.toLocaleString('ko-KR') + '원'; };
+  var DemoCalc = window.CHAEDA_DEMO_CALCULATOR;
   /* 아이콘은 항상 장식이다 — aria-hidden 이 없으면 스크린리더가 ligature 원문("chevron_right")을 읽는다. */
   var ico = function (name, cls) {
     return '<span class="ms' + (cls ? ' ' + cls : '') + '" aria-hidden="true">' + name + '</span>';
@@ -106,7 +107,11 @@
     openHolding: null,
     yearIdx: 0,
     alerts: {},
-    compare: C.preview.watch.defaultSelected.slice()
+    compare: C.preview.watch.defaultSelected.slice(),
+    demoStep: 0,
+    demoBondId: C.demo.bonds[0].id,
+    demoAmount: C.demo.amountDefault,
+    demoRegistered: false
   };
   C.preview.alerts.toggles.forEach(function (t) { state.alerts[t.key] = !!t.on; });
 
@@ -261,6 +266,68 @@
     });
   }
 
+  function selectedDemoBond() {
+    return C.demo.bonds.filter(function (b) { return b.id === state.demoBondId; })[0] || C.demo.bonds[0];
+  }
+
+  function demoResult() {
+    return DemoCalc.calculate({
+      budget: state.demoAmount,
+      unitPrice: selectedDemoBond().unitPrice,
+      annualRatePct: selectedDemoBond().rate,
+      years: selectedDemoBond().years
+    });
+  }
+
+  function demoCard(b) {
+    var selected = b.id === state.demoBondId;
+    return '<button type="button" class="demo-bond' + (selected ? ' is-selected' : '') + '" data-demo-bond="' + esc(b.id) + '" aria-pressed="' + selected + '">' +
+      '<span><b>' + esc(b.name) + '</b><small>' + esc(b.kind) + ' · ' + esc(b.grade) + ' · 만기 ' + esc(b.maturity) + '</small></span>' +
+      '<span class="demo-rate"><b>' + esc(b.rate.toFixed(2)) + '%</b><small>표면이율</small></span></button>';
+  }
+
+  function renderDemo() {
+    var D = C.demo, b = selectedDemoBond(), r = demoResult(), body = '', title = '';
+    if (state.demoStep === 0) {
+      title = '둘러보기';
+      body = '<div class="search">' + ico('search') + '채권명 · 종목코드 검색</div>' +
+        '<div class="chips"><span class="chip" aria-pressed="true">전체</span><span class="chip">국채</span><span class="chip">회사채</span></div>' +
+        '<div class="demo-list-head"><b>예시 채권 ' + D.bonds.length + '건</b><span>채권을 눌러 상세 보기</span></div>' +
+        '<div class="demo-bond-list">' + D.bonds.map(demoCard).join('') + '</div>';
+    } else if (state.demoStep === 1) {
+      title = '채권 상세';
+      body = '<div class="demo-detail-hero"><span>' + esc(b.kind) + ' · ' + esc(b.grade) + '</span><h3>' + esc(b.name) + '</h3><small>' + esc(b.code) + '</small></div>' +
+        '<div class="metrics"><div class="metric"><div class="k">표면이율</div><div class="v mint">' + esc(b.rate.toFixed(2)) + '%</div></div><div class="metric"><div class="k">만기</div><div class="v">' + esc(b.maturity.slice(2).replace(/-/g,'.')) + '</div></div><div class="metric"><div class="k">이자 주기</div><div class="v">' + esc(b.cycleMonths) + '개월</div></div></div>' +
+        '<div class="demo-register"><label for="demoAmount">' + esc(D.amountLabel) + '<output id="demoAmountOut">' + won(state.demoAmount) + '</output></label>' +
+        '<input id="demoAmount" type="range" min="' + D.amountMin + '" max="' + D.amountMax + '" step="' + D.amountStep + '" value="' + state.demoAmount + '">' +
+        '<div class="demo-range"><span>' + won(D.amountMin) + '</span><span>' + won(D.amountMax) + '</span></div>' +
+        '<button type="button" class="demo-app-primary" data-demo-next>' + ico('calculate') + esc(D.calculate) + '</button></div>';
+    } else if (state.demoStep === 2) {
+      title = '예상 수익';
+      body = '<div class="demo-result"><div class="result-main"><span>' + esc(b.name) + ' · 예상 세후 만기 수령액</span><strong>' + won(r.estimatedTotal) + '</strong><small>원금 상환액 + 세후 단순 이자</small></div>' +
+        '<dl><div><dt>예상 매입금액</dt><dd>' + won(r.purchaseAmount) + '</dd></div><div><dt>액면금액</dt><dd>' + won(r.faceAmount) + '</dd></div>' +
+        '<div><dt>세전 단순 이자</dt><dd>' + won(r.grossInterest) + '</dd></div><div><dt>예상 원천징수</dt><dd>−' + won(r.withholdingTax) + '</dd></div></dl>' +
+        '<p class="calc-note">고정금리·정상 만기상환 전제의 단순 계산입니다. 15.4%는 예시 이자에만 적용합니다. 실제 이표 일정·경과이자·체결가·수수료와 개인별 과세 조건에 따라 달라질 수 있습니다.</p>' +
+        '<button type="button" class="demo-app-primary" data-demo-register>' + ico('add_circle') + esc(D.register) + '</button></div>';
+    } else {
+      title = '나의 채권';
+      body = '<div class="demo-holding-summary"><span>예시 보유 금액</span><strong>' + won(r.faceAmount) + '</strong><small>가상 등록 1종목</small></div>' +
+        '<div class="holding-demo"><div class="holding-top"><div><span>보유채권</span><h3>' + esc(b.name) + '</h3></div><span class="status-pill">데모</span></div>' +
+        '<div class="holding-grid"><div><span>등록 액면금액</span><b>' + won(r.faceAmount) + '</b></div><div><span>만기일</span><b>' + esc(b.maturity) + '</b></div><div><span>이자 주기</span><b>' + esc(b.cycleMonths) + '개월</b></div><div><span>예산 잔액</span><b>' + won(r.remainingCash) + '</b></div></div>' +
+        '<div class="vision-preview"><b>앞으로 연결할 관리 경험</b><span>공식 정보의 변화 → 내 채권 영향 확인 → 원문과 후속 확인 항목</span><small>미래 비전 예시이며 현재 제공 기능이 아닙니다.</small></div></div>';
+    }
+
+    var backDisabled = state.demoStep === 0;
+    el('demoApp').innerHTML = '<div class="demo-shell"><div class="demo-banner">' + ico('science') + '<b>' + esc(D.badge) + '</b><span>' + esc(D.caution) + '</span></div>' +
+      '<div class="demo-device-wrap"><div class="demo-device"><div class="demo-status"><span>9:41</span><span>' + ico('signal_cellular_alt') + ico('wifi') + ico('battery_full') + '</span></div>' +
+      '<div class="demo-appbar"><button type="button" data-demo-prev' + (backDisabled ? ' disabled' : '') + ' aria-label="이전 화면">' + ico('arrow_back') + '</button><b>' + esc(title) + '</b><button type="button" data-demo-reset aria-label="처음부터 다시">' + ico('restart_alt') + '</button></div>' +
+      '<div class="demo-appbody" aria-live="polite">' + body + '</div><div class="demo-tabbar">' +
+      '<button type="button" data-demo-tab="0" class="' + (state.demoStep < 3 ? 'is-active' : '') + '">' + ico('explore') + '<span>둘러보기</span></button>' +
+      '<button type="button" data-demo-tab="3" class="' + (state.demoStep === 3 ? 'is-active' : '') + '"' + (state.demoRegistered ? '' : ' disabled') + '>' + ico('account_balance_wallet') + '<span>나의 채권</span></button>' +
+      '<button type="button" disabled>' + ico('favorite') + '<span>관심</span></button><button type="button" disabled>' + ico('settings') + '<span>설정</span></button></div></div>' +
+      '<aside class="demo-coach"><span>앱 화면을 직접 눌러보세요</span><h3>' + esc(D.steps[state.demoStep]) + '</h3><p>' + (state.demoStep === 0 ? '목록에서 궁금한 채권을 선택하세요.' : state.demoStep === 1 ? '금액을 바꾸고 예상 수익을 계산하세요.' : state.demoStep === 2 ? '계산 가정을 확인하고 보유채권으로 등록하세요.' : '등록한 채권의 금액과 일정을 확인하세요.') + '</p><button type="button" data-demo-reset>' + ico('restart_alt') + esc(D.startOver) + '</button></aside></div></div>';
+  }
+
   /* ── 소개 페이지 ──────────────────────────── */
   function home() {
     var H = C.hero;
@@ -270,10 +337,19 @@
       '<p>' + esc(H.body) + '</p>' +
       '<div class="disc">' + esc(H.disclaimer) + '</div>' +
       '<div class="btns">' + H.buttons.map(function (b) {
-        return '<a class="btn primary" href="' + esc(b.href) + '">' +
+        return '<a class="btn primary" href="' + esc(b.href) + '" target="_blank" rel="noopener">' +
           (STORE_SVG[b.store] || '') + esc(b.label) + '</a>';
-      }).join('') + '</div></div>' +
+      }).join('') + '<a class="btn ghost" href="#demo">' + esc(H.demoLabel) + '</a></div></div>' +
       '</div>';
+
+    var P = C.problem;
+    el('problemContent').innerHTML = '<div class="section-head"><div class="kicker">' + esc(P.kicker) + '</div><h2>' + esc(P.title) + '</h2><p class="sub">' + esc(P.body) + '</p></div>' +
+      '<div class="question-grid">' + P.questions.map(function (q) { return '<article><span>' + esc(q.no) + '</span><h3>' + esc(q.title) + '</h3><p>' + esc(q.body) + '</p></article>'; }).join('') + '</div>';
+    el('demoHead').innerHTML = '<div class="kicker">' + esc(C.demo.kicker) + '</div><h2>' + esc(C.demo.title) + '</h2><p class="sub">' + esc(C.demo.body) + '</p>';
+    var V = C.vision;
+    el('visionContent').innerHTML = '<div class="section-head"><div class="kicker">' + esc(V.kicker) + '</div><h2>' + esc(V.title) + '</h2></div><div class="roadmap" role="list">' +
+      V.phases.map(function (phase) { return '<article class="roadmap-phase ' + esc(phase.key) + '" role="listitem"><div class="roadmap-marker" aria-hidden="true"></div><div class="roadmap-head"><b>' + esc(phase.label) + '</b></div><ul>' + phase.items.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></article>'; }).join('') +
+      '</div><p class="vision-note">' + esc(V.note) + '</p>';
 
     el('featTitle').textContent = C.featuresSection.title;
     el('status').innerHTML = '<span>' + esc(C.preview.statusTime) + '</span>' +
@@ -297,11 +373,18 @@
     }).join('');
 
     renderExplorer();
+    renderDemo();
 
     document.addEventListener('click', function (e) {
-      var t = e.target.closest ? e.target.closest('[data-feature],[data-tab],[data-chip],[data-holding],[data-year],[data-toggle],[data-watch]') : null;
+      var t = e.target.closest ? e.target.closest('[data-feature],[data-tab],[data-chip],[data-holding],[data-year],[data-toggle],[data-watch],[data-demo-bond],[data-demo-prev],[data-demo-next],[data-demo-register],[data-demo-reset],[data-demo-tab]') : null;
       if (!t) return;
       var d = t.dataset;
+      if (d.demoBond) { state.demoBondId = d.demoBond; state.demoStep = 1; renderDemo(); return; }
+      if (d.demoPrev !== undefined) { state.demoStep = Math.max(0, state.demoStep - 1); renderDemo(); return; }
+      if (d.demoNext !== undefined) { state.demoStep = Math.min(C.demo.steps.length - 1, state.demoStep + 1); renderDemo(); return; }
+      if (d.demoRegister !== undefined) { state.demoRegistered = true; state.demoStep = 3; renderDemo(); return; }
+      if (d.demoReset !== undefined) { state.demoStep = 0; state.demoBondId = C.demo.bonds[0].id; state.demoAmount = C.demo.amountDefault; state.demoRegistered = false; renderDemo(); return; }
+      if (d.demoTab !== undefined) { if (Number(d.demoTab) !== 3 || state.demoRegistered) state.demoStep = Number(d.demoTab); renderDemo(); return; }
       if (d.feature) state.feature = d.feature;
       else if (d.tab) state.feature = d.tab;
       else if (d.chip) state.chip = d.chip;
@@ -317,6 +400,11 @@
     });
     document.addEventListener('input', function (e) {
       if (e.target.id === 'sim') { state.sim = Number(e.target.value); renderExplorer(); }
+      if (e.target.id === 'demoAmount') {
+        state.demoAmount = Number(e.target.value);
+        var out = el('demoAmountOut');
+        if (out) out.textContent = won(state.demoAmount);
+      }
     });
   }
 
@@ -412,7 +500,7 @@
   var page = document.body.dataset.page;
   chrome(page);
   guardIconFont();
-  if (page === 'home') home();
+  if (page === 'home-legacy') home();
   if (page === 'support') support();
   if (page === 'privacy') privacy();
 })();

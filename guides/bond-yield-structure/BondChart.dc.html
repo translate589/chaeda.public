@@ -126,31 +126,32 @@
 </sc-if>
 
 <sc-if value="{{ isTradeFlow }}" hint-placeholder-val="{{ false }}">
-  <div style="background:#FFFFFF;border:1px solid #EEEEEE;border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:14px">
+  <div role="img" aria-label="발행회사에서 최초 매수자와 현재 소유자를 거쳐 만기에 상환되는 채권 거래 흐름" style="background:#FFFFFF;border:1px solid #EEEEEE;border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:14px">
     <div style="font-size:14px;font-weight:800;letter-spacing:-.025em;color:#212121">채권의 흐름</div>
-    <div style="display:grid;grid-template-columns:{{ railCols }};column-gap:10px;align-items:stretch">
+    <div class="trade-diagram-grid" style="display:grid;grid-template-columns:{{ railCols }};column-gap:24px;align-items:stretch">
 
-      <div style="grid-column:1;display:flex;align-items:center;gap:12px;background:#F5F5F5;border:1px solid #E6E6E6;border-radius:16px;padding:14px">
+      <div class="trade-build-item" data-build-step="1" style="grid-column:1;display:flex;align-items:center;gap:12px;background:#F5F5F5;border:1px solid #E6E6E6;border-radius:16px;padding:14px">
         <div style="width:34px;height:34px;border-radius:10px;background:#E8EAF6;display:flex;align-items:center;justify-content:center;flex:none">
           <svg width="22" height="22" viewBox="0 0 960 960" style="fill:#3949AB"><path d="M120,840L120,320L360,320L360,160L720,160L720,480L840,480L840,840L560,840L560,640L400,640L400,840L120,840ZM200,760L280,760L280,680L200,680L200,760ZM200,600L280,600L280,520L200,520L200,600ZM200,440L280,440L280,400L200,400L200,440ZM440,600L520,600L520,520L440,520L440,600ZM440,440L520,440L520,400L440,400L440,440ZM440,280L520,280L520,240L440,240L440,280ZM600,760L680,760L680,680L600,680L600,760ZM600,600L680,600L680,520L600,520L600,600ZM600,440L680,440L680,400L600,400L600,440ZM600,280L680,280L680,240L600,240L600,280ZM760,760L760,560L720,560L720,760L760,760Z"/></svg>
         </div>
         <div style="display:flex;flex-direction:column;gap:2px">
           <div style="font-size:15px;font-weight:800;letter-spacing:-.025em;color:#212121"><span style="background:#E8EAF6;box-shadow:0 -2px 0 #E8EAF6 inset;padding:0 4px;border-radius:4px;color:#283593">발행회사</span></div>
           <div style="font-size:12px;font-weight:600;letter-spacing:-.025em;color:#757575">돈을 빌리고 <b style="color:#283593">이자를 주는</b> 쪽</div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:-.025em;color:#616161">액면 100만원 · 표면금리 5% · 만기 1년</div>
         </div>
       </div>
 
-      <div style="grid-column:1;display:flex;align-items:center;gap:10px;padding:8px 0 8px 30px">
+      <div class="trade-build-item" data-build-step="2" style="grid-column:1;display:flex;align-items:center;gap:10px;padding:8px 0 8px 30px">
         <div style="display:flex;flex-direction:column;align-items:center;gap:0;flex:none">
           <div style="width:2px;height:14px;background:#9FA8DA"></div>
           <div style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid #9FA8DA"></div>
         </div>
         <div style="display:flex;flex-direction:column;gap:1px">
-          <div style="font-size:13px;font-weight:700;letter-spacing:-.025em;color:#424242">① A씨가 <b style="color:#283593">100만원</b>을 내고 채권을 받음</div>
+          <div style="font-size:13px;font-weight:700;letter-spacing:-.025em;color:#424242">A씨가 <b style="color:#283593">100만원</b>을 내고 채권을 받음</div>
         </div>
       </div>
 
-      <div style="grid-column:1;display:flex;align-items:center;gap:12px;background:#F5F5F5;border:1px solid #E6E6E6;border-radius:16px;padding:14px">
+      <div class="trade-build-item" data-build-step="2" style="grid-column:1;display:flex;align-items:center;gap:12px;background:#F5F5F5;border:1px solid #E6E6E6;border-radius:16px;padding:14px">
         <div style="width:34px;height:34px;border-radius:999px;background:#E3F2FD;display:flex;align-items:center;justify-content:center;flex:none">
           <svg width="22" height="22" viewBox="0 0 960 960" style="fill:#1565C0"><path d="M480,480Q414,480 367,433Q320,386 320,320Q320,254 367,207Q414,160 480,160Q546,160 593,207Q640,254 640,320Q640,386 593,433Q546,480 480,480ZM160,800L160,688Q160,654 177.5,625.5Q195,597 224,582Q286,551 350,535.5Q414,520 480,520Q546,520 610,535.5Q674,551 736,582Q765,597 782.5,625.5Q800,654 800,688L800,800L160,800Z"/></svg>
         </div>
@@ -160,41 +161,48 @@
         </div>
       </div>
 
-      <div style="grid-column:1;display:flex;align-items:center;gap:10px;padding:8px 0 8px 30px">
+      <div class="trade-build-item" data-build-step="3" style="grid-column:1;display:flex;align-items:center;gap:10px;padding:8px 0 8px 30px">
         <div style="display:flex;flex-direction:column;align-items:center;gap:0;flex:none">
           <div style="width:2px;height:14px;background:#42A5F5"></div>
           <div style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid #42A5F5"></div>
         </div>
         <div style="display:flex;flex-direction:column;gap:1px">
-          <div style="font-size:13px;font-weight:700;letter-spacing:-.025em;color:#424242">②③ 채권은 <b style="color:#00695C">나에게</b>, 대금 <b style="color:#1565C0">90만원</b>은 A씨에게</div>
+          <div style="font-size:13px;font-weight:700;letter-spacing:-.025em;color:#424242">채권은 <b style="color:#00695C">나에게</b>, 대금 <b style="color:#1565C0">90만원</b>은 A씨에게</div>
         </div>
       </div>
 
-      <div style="grid-column:1;display:flex;align-items:center;gap:12px;background:#F5F5F5;border:1px solid #E6E6E6;border-radius:16px;padding:14px">
+      <div class="trade-build-item" data-build-step="4" style="grid-column:1;display:flex;align-items:center;gap:12px;background:#F5F5F5;border:1px solid #E6E6E6;border-radius:16px;padding:14px">
         <div style="width:34px;height:34px;border-radius:999px;background:#E0F2F1;display:flex;align-items:center;justify-content:center;flex:none">
           <svg width="22" height="22" viewBox="0 0 960 960" style="fill:#00695C"><path d="M480,480Q414,480 367,433Q320,386 320,320Q320,254 367,207Q414,160 480,160Q546,160 593,207Q640,254 640,320Q640,386 593,433Q546,480 480,480ZM160,800L160,688Q160,654 177.5,625.5Q195,597 224,582Q286,551 350,535.5Q414,520 480,520Q546,520 610,535.5Q674,551 736,582Q765,597 782.5,625.5Q800,654 800,688L800,800L160,800Z"/></svg>
         </div>
         <div style="display:flex;flex-direction:column;gap:2px">
           <div style="font-size:15px;font-weight:800;letter-spacing:-.025em;color:#212121"><span style="background:#E0F2F1;padding:0 4px;border-radius:4px;color:#00695C">나</span> · 중간에 산 사람</div>
           <div style="font-size:12px;font-weight:600;letter-spacing:-.025em;color:#757575"><b style="color:#00695C">90만원</b>을 내고 채권의 주인이 됨</div>
+          <div class="trade-owner-tag" style="font-size:11px;font-weight:800;letter-spacing:-.025em;color:#00695C">현재 소유자</div>
         </div>
       </div>
 
-      <div style="grid-column:{{ railCol }};grid-row:{{ railRow }};display:{{ railDisplay }};align-items:stretch;padding:20px 0">
-        <div style="flex:1;display:flex;align-items:center;justify-content:center;border-top:2px solid #009688;border-right:2px solid #009688;border-bottom:2px solid #009688;border-radius:0 16px 16px 0;position:relative">
-          <div style="font-size:12px;font-weight:700;letter-spacing:-.025em;color:#424242;text-align:center;line-height:1.7;padding:0 8px">④⑤ 만기<br><b style="color:#283593">액면 100만원</b><br><b style="color:#00695C">이자 5만원</b></div>
+      <div class="trade-outcome-column" style="grid-column:{{ railCol }};grid-row:{{ railRow }};display:{{ railDisplay }};flex-direction:column;justify-content:center;gap:18px;padding:16px 0">
+        <div class="trade-build-item trade-profit-card" data-build-step="4">
+          <div>나의 세후 수익</div>
+          <div><span>이자수익</span><b>42,300원</b></div>
+          <div><span>매수차익</span><b>100,000원</b></div>
+          <div><span>총수익</span><strong>142,300원</strong></div>
+        </div>
+        <div class="trade-build-item trade-maturity-rail" data-build-step="5">
+          <div style="font-size:12px;font-weight:700;letter-spacing:-.025em;color:#424242;text-align:center;line-height:1.7;padding:0 8px">만기<br><b style="color:#283593">액면 100만원</b><br><b style="color:#00695C">이자 5만원</b></div>
           <div style="position:absolute;left:-1px;bottom:-6px;width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-right:7px solid #009688"></div>
         </div>
       </div>
 
-      <div style="grid-column:1;display:{{ bandDisplay }};flex-direction:column;gap:6px;border-top:2px solid #009688;padding:12px 2px 0;margin-top:8px">
-        <div style="font-size:13px;font-weight:700;letter-spacing:-.025em;color:#424242">④⑤ 만기에 <b style="color:#283593">발행회사</b>가 <b style="color:#00695C">나</b>에게</div>
+      <div class="trade-build-item trade-maturity-band" data-build-step="5" style="grid-column:1;display:{{ bandDisplay }};flex-direction:column;gap:6px;border-top:2px solid #009688;padding:12px 2px 0;margin-top:8px">
+        <div style="font-size:13px;font-weight:700;letter-spacing:-.025em;color:#424242">만기에 <b style="color:#283593">발행회사</b>가 <b style="color:#00695C">나</b>에게</div>
         <div style="font-size:13px;line-height:1.7;letter-spacing:-.025em;color:#616161"><b style="color:#283593">액면 100만원</b> + <b style="color:#00695C">이자 5만원</b>. A씨를 거치지 않고 지금 소유자에게 옵니다.</div>
       </div>
 
     </div>
-    <div style="display:{{ railNoteDisplay }};font-size:11px;font-weight:700;letter-spacing:-.025em;color:#00796B;text-align:right">④⑤ 발행회사 → 나 · A씨를 거치지 않습니다</div>
-    <div style="display:flex;gap:10px;background:#E0F2F1;border-radius:16px;padding:12px;margin-top:2px">
+    <div class="trade-build-item" data-build-step="5" style="display:{{ railNoteDisplay }};font-size:11px;font-weight:700;letter-spacing:-.025em;color:#00796B;text-align:right">발행회사 → 나 · A씨를 거치지 않습니다</div>
+    <div class="trade-build-item" data-build-step="5" style="display:flex;gap:10px;background:#E0F2F1;border-radius:16px;padding:12px;margin-top:2px">
       <div style="width:4px;border-radius:999px;background:#80CBC4"></div>
       <div style="font-size:12px;line-height:1.65;letter-spacing:-.025em;color:#00796B">채권이 A씨에서 나에게 넘어와도 <b>발행회사의 약속은 그대로</b>입니다. 산 값이 얼마였든, 회사는 마지막 소유자에게 액면과 이자를 갚습니다.</div>
     </div>

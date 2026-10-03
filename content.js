@@ -12,7 +12,7 @@ window.CHAEDA_CONTENT = {
     name: '채다',
     logoText: '채',
     tagline: '채권 정보 · 관리 앱',
-    baseUrl: 'https://translate589.github.io/chaeda.public',
+    baseUrl: 'https://chaeda.kr',
     /* 헤더 nav. 법적 고지(개인정보처리방침)는 여기 두지 않고 footer.nav 에만 둡니다. */
     nav: [
       { key: 'home', label: '소개', file: 'index.html' },
@@ -29,10 +29,57 @@ window.CHAEDA_CONTENT = {
     titleLines: ['채권, 이제', '쉽게 챙길 수 있어요'],
     body: '공개된 채권 정보를 쉽게 찾을 수 있고 내가 가진 채권의 이자일·만기일을 대신 챙겨주는 앱이에요.',
     disclaimer: '채다는 채권 정보·관리 도구로, 매수·매도 중개나 투자 자문·권유를 제공하지 않습니다. 표시되는 수익률은 참고용 계산값입니다.',
+    demoLabel: '예시 데이터로 체험하기',
     buttons: [
       { label: 'App Store', store: 'apple', href: 'https://apps.apple.com/kr/app/id6794857475' },
       { label: 'Google Play', store: 'play', href: 'https://play.google.com/store/apps/details?id=com.chaeda.app&hl=ko' }
     ]
+  },
+
+  problem: {
+    kicker: '왜 채다인가요?',
+    title: '정보는 많지만, 내 채권과 연결하기는 어렵습니다',
+    body: '공시·신용정보·일정은 여러 곳에 흩어져 있고, 투자자는 어떤 변화가 내 채권과 관련 있는지 직접 판단해야 합니다. 채다는 이 보유 이후의 관리 공백을 줄이는 데 집중합니다.',
+    questions: [
+      { no: '01', title: '무슨 일이 있었나요?', body: '발행사와 채권에 관한 공식 정보를 이해하기 쉬운 흐름으로 정리합니다.' },
+      { no: '02', title: '내 채권과 관련 있나요?', body: '종목과 보유 내역을 연결해 영향 범위를 확인하는 경험을 설계합니다.' },
+      { no: '03', title: '무엇을 확인해야 하나요?', body: '원문 근거와 일정, 필요한 후속 확인 항목을 함께 보여주는 것이 목표입니다.' }
+    ]
+  },
+
+  demo: {
+    kicker: 'INTERACTIVE DEMO',
+    title: '탐색부터 보유 관리까지 직접 체험해 보세요',
+    body: '화면 안의 채권을 눌러 상세를 보고, 금액을 바꿔 계산한 뒤 보유채권으로 등록해 보세요.',
+    badge: '가상 데모 · 실제 거래 아님',
+    caution: '아래 종목·가격·일정은 흐름 설명을 위한 예시입니다. 실시간 시세, 실제 매수, 실제 보유내역이 아니며 실제 수익률·세액을 보장하지 않습니다.',
+    steps: ['채권 탐색', '선택·등록', '수익 계산', '보유 관리'],
+    bonds: [
+      { id: 'demo-1', name: '가온전력 12-1', code: 'KR0000000001', kind: '회사채', rate: 4.62, years: 2.25, maturity: '2028-11-10', cycleMonths: 6, grade: 'AA', unitPrice: 9850 },
+      { id: 'demo-2', name: '한국전력공사채권1065', code: 'KR0000000002', kind: '특수채', rate: 3.88, years: 0.67, maturity: '2027-04-18', cycleMonths: 6, grade: 'AAA', unitPrice: 9970 },
+      { id: 'demo-3', name: '국고채권 01500-5003', code: 'KR0000000003', kind: '국채', rate: 3.42, years: 3.45, maturity: '2030-03-10', cycleMonths: 6, grade: '국채', unitPrice: 10120 }
+    ],
+    amountLabel: '투자 예산',
+    amountMin: 100000,
+    amountMax: 5000000,
+    amountStep: 100000,
+    amountDefault: 1000000,
+    prev: '이전',
+    next: '다음',
+    startOver: '처음부터 다시',
+    register: '이 예시 채권 등록',
+    calculate: '예상 수익 계산하기'
+  },
+
+  vision: {
+    kicker: 'ROADMAP',
+    title: '로드맵',
+    phases: [
+      { key: 'phase1', label: 'PHASE 1', items: ['장내채권 검색과 상세 정보', '보유채권 등록', '기본 이자·만기 일정 관리', '관심 채권과 알림 설정'] },
+      { key: 'phase2', label: 'PHASE 2', items: ['공식 공시와 보유자산 연결', '위험 신호의 영향 범위 설명', '원문 근거와 후속 확인 절차 연결'] },
+      { key: 'phase3', label: 'PHASE 3', items: ['자산 다이어리', '포트폴리오 집중도'] }
+    ],
+    note: '미래 기능은 현재 제공 중인 기능이 아니며, 데이터 확보와 정확성 검증을 거쳐 단계적으로 검토합니다. 채다는 부도 예측이나 투자 추천을 제공하지 않습니다.'
   },
 
   /* ── 주요 기능 (오른쪽 목록 + 왼쪽 프리뷰) ── */

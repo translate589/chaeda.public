@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>채다 앱 기능 체험</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'">
+  <style>
+    html,body,#chaeda-demo{width:100%;height:100%;margin:0;overflow:hidden;background:#fff;overscroll-behavior:contain}
+    #detail-scroll-hint{position:fixed;z-index:20;left:0;right:0;bottom:0;height:82px;display:flex;align-items:flex-end;justify-content:center;padding:0 16px 12px;box-sizing:border-box;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.96) 62%);color:#4c5b57;font:600 12px/1.4 system-ui,sans-serif;pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease}
+    #detail-scroll-hint[data-visible="true"]{opacity:1;transform:none}
+  </style>
+</head>
+<body>
+  <div id="chaeda-demo" aria-label="채다 앱 기능 체험"></div>
+  <div id="detail-scroll-hint" aria-hidden="true">아래로 스크롤해 더 보기 ↓</div>
+  <script src="detail-scroll.js?v=demo-20261002-18"></script>
+  <script src="chaeda-demo.js?v=demo-20261002-18"></script>
+</body>
+</html>

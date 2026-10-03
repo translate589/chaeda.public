@@ -1,2 +1,6 @@
 .DS_Store
 /docs/
+
+# GitHub Pages는 app-demo 실행 자산을 저장소에서 직접 배포한다.
+# 브라우저 디버깅용 source map만 로컬 생성물로 제외한다.
+/app-demo/*.map
