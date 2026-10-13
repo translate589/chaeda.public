@@ -88,11 +88,7 @@
       ftr.innerHTML = '<div class="wrap"><div class="lines">' +
         C.footer.lines.map(esc).join('<br>') +
         '<span class="copy">' + esc(C.footer.copyright) + '</span>' +
-        '</div><nav aria-label="사이트 정보">' +
-        C.footer.nav.map(function (n) {
-          return '<a href="' + href(n.file) + '">' + esc(n.label) + '</a>';
-        }).join('') +
-        '</nav></div>';
+        '</div></div>';
     }
     /* document.title 은 각 페이지의 정적 <title> 이 단일 출처다.
      * 여기서 덮어쓰면 크롤러가 보는 값과 사용자가 보는 값이 갈라지고,
@@ -424,9 +420,62 @@
         '<span class="ms" aria-hidden="true">expand_more</span></summary><p>' + esc(f.a) + '</p></details>';
     }).join('');
     el('blocks').innerHTML = S.blocks.map(function (b) {
-      return '<div class="pane' + (b.strong ? ' strong' : '') + '"><h3>' + esc(b.title) + '</h3>' +
+      return '<div class="pane' + (b.strong ? ' strong' : '') + (b.wide ? ' wide' : '') + '"><h3>' + esc(b.title) + '</h3>' +
         (b.body ? '<p>' + esc(b.body) + '</p>' : '') +
-        (b.items ? '<ul>' + b.items.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul>' : '') + '</div>';
+        (b.items ? '<ul>' + b.items.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul>' : '') +
+        (b.link ? '<p><a class="more" href="' + href(b.link.file) + '">' + esc(b.link.label) + ico('chevron_right') + '</a></p>' : '') + '</div>';
+    }).join('');
+  }
+
+  /* ── 문서형 블록 (처리방침 · 삭제 요청 공용) ── */
+  function item(it) {
+    if (typeof it === 'string') return '<li>' + esc(it) + '</li>';
+    var body = esc(it.text);
+    if (it.link) {
+      body += ' <a href="' + esc(it.link) + '" target="_blank" rel="noopener">' + esc(it.link) + '</a>';
+      if (it.tail) body += ' <span class="tail">' + esc(it.tail) + '</span>';
+    }
+    if (it.items) body += '<ul>' + it.items.map(item).join('') + '</ul>';
+    return '<li>' + body + '</li>';
+  }
+
+  function block(b) {
+    if (b.type === 'p') return '<p>' + esc(b.text) + '</p>';
+    if (b.type === 'ol') return '<ol>' + b.items.map(item).join('') + '</ol>';
+    if (b.type === 'ul') return '<ul>' + b.items.map(item).join('') + '</ul>';
+    if (b.type === 'table') {
+      /* CSS grid 로 그리되 표 의미는 role 로 준다 — 그리드 div 만으로는
+       * 스크린리더에 행/열 관계가 전혀 전달되지 않는다. 첫 행은 헤더로 취급한다. */
+      return '<div class="tbl" role="table">' + b.rows.map(function (r, ri) {
+        var cell = ri === 0 ? 'columnheader' : 'cell';
+        return '<div class="tr" role="row" style="grid-template-columns:' + esc(b.cols) + '">' +
+          r.map(function (c) {
+            return '<div class="td" role="' + cell + '">' + esc(c) + '</div>';
+          }).join('') + '</div>';
+      }).join('') + '</div>';
+    }
+    return '';
+  }
+
+  /* ── 계정 · 데이터 삭제 요청 ───────────────── */
+  function deleteAccount() {
+    var D = C.deleteAccount;
+    el('title').textContent = D.title;
+    el('pmeta').textContent = D.meta;
+    el('lede').textContent = D.intro;
+    el('methods').innerHTML = D.methods.map(function (m) {
+      var mail = m.mail ? '<a class="btn solid" href="mailto:' + esc(m.mail.to) +
+        '?subject=' + encodeURIComponent(m.mail.subject) +
+        '&body=' + encodeURIComponent(m.mail.body.join('\r\n')) + '">' +
+        ico('mail') + esc(m.mail.label) + '</a>' : '';
+      return '<div class="pane' + (m.strong ? ' strong' : '') + '"><h3>' + esc(m.title) + '</h3>' +
+        '<p>' + esc(m.body) + '</p>' +
+        '<ol>' + m.steps.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ol>' +
+        mail + '</div>';
+    }).join('');
+    el('psecs').innerHTML = D.sections.map(function (s) {
+      return '<section class="psec"><h2>' + esc(s.title) + '</h2>' +
+        (s.blocks || []).map(block).join('') + '</section>';
     }).join('');
   }
 
@@ -448,35 +497,6 @@
     el('toc').innerHTML = P.sections.map(function (s, i) {
       return '<a href="#' + slug(s, i) + '">' + esc(s.title) + '</a>';
     }).join('');
-
-    function item(it) {
-      if (typeof it === 'string') return '<li>' + esc(it) + '</li>';
-      var body = esc(it.text);
-      if (it.link) {
-        body += ' <a href="' + esc(it.link) + '" target="_blank" rel="noopener">' + esc(it.link) + '</a>';
-        if (it.tail) body += ' <span class="tail">' + esc(it.tail) + '</span>';
-      }
-      if (it.items) body += '<ul>' + it.items.map(item).join('') + '</ul>';
-      return '<li>' + body + '</li>';
-    }
-
-    function block(b) {
-      if (b.type === 'p') return '<p>' + esc(b.text) + '</p>';
-      if (b.type === 'ol') return '<ol>' + b.items.map(item).join('') + '</ol>';
-      if (b.type === 'ul') return '<ul>' + b.items.map(item).join('') + '</ul>';
-      if (b.type === 'table') {
-        /* CSS grid 로 그리되 표 의미는 role 로 준다 — 그리드 div 만으로는
-         * 스크린리더에 행/열 관계가 전혀 전달되지 않는다. 첫 행은 헤더로 취급한다. */
-        return '<div class="tbl" role="table">' + b.rows.map(function (r, ri) {
-          var cell = ri === 0 ? 'columnheader' : 'cell';
-          return '<div class="tr" role="row" style="grid-template-columns:' + esc(b.cols) + '">' +
-            r.map(function (c) {
-              return '<div class="td" role="' + cell + '">' + esc(c) + '</div>';
-            }).join('') + '</div>';
-        }).join('') + '</div>';
-      }
-      return '';
-    }
 
     el('psecs').innerHTML = P.sections.map(function (s, i) {
       return '<section class="psec"><h2 id="' + slug(s, i) + '">' + esc(s.title) + '</h2>' +
@@ -503,4 +523,5 @@
   if (page === 'home-legacy') home();
   if (page === 'support') support();
   if (page === 'privacy') privacy();
+  if (page === 'delete-account') deleteAccount();
 })();
