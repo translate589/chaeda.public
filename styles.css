@@ -27,6 +27,14 @@ h1,h2,h3{margin:0;letter-spacing:-.025em}
 .no-ms .ms{display:none}
 .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
 
+/* 검색·JavaScript 미사용 환경에도 같은 안내와 가이드가 보인다. */
+.static-nav{flex-wrap:wrap;justify-content:flex-end;gap:10px 16px}.static-nav a{font-size:13px}
+.guide-sec{background:#F5FAF9}.guide-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:28px}
+.guide-card{display:flex;flex-direction:column;padding:28px;border:1px solid #D8E9E5;border-radius:24px;background:#fff;color:var(--g900);transition:border-color .15s,box-shadow .15s}
+.guide-card:hover{color:var(--g900);border-color:var(--mint500);box-shadow:0 12px 30px rgba(0,105,92,.08)}
+.guide-card-label{color:var(--mint700);font-size:12px;font-weight:750}.guide-card h3{margin-top:12px;font-size:23px;line-height:1.45}.guide-card p{font-size:15px;line-height:1.7;color:var(--g700);margin:12px 0 24px}.guide-card-link{margin-top:auto;font-weight:750;font-size:14px;color:var(--mint700)}
+@media(max-width:640px){.guide-cards{grid-template-columns:1fr;gap:14px}.guide-card{padding:24px}.guide-card h3{font-size:21px}.static-nav{gap:8px}.static-nav a{font-size:11px}}
+
 /* 실제 Compose 앱 체험 — 소개는 HTML, 앱 UI는 지연 로드 iframe */
 .experience-sec{background:linear-gradient(180deg,#fff 0,#f3f8f6 100%)}
 .experience-layout{margin-top:38px;display:grid;grid-template-columns:minmax(250px,330px) minmax(360px,460px);gap:52px;align-items:start;justify-content:center}

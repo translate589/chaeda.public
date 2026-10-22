@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>표면금리와 수익률은 왜 다를까요? | 채다 채권 가이드</title>
+  <meta name="description" content="표면금리는 이자를 계산하는 기준이고, 만기수익률은 매입가격과 남은 현금흐름을 함께 보는 값입니다. 액면금액 1만원 예시로 차이를 쉽게 설명합니다.">
+  <meta name="theme-color" content="#009688">
+  <link rel="canonical" href="https://chaeda.kr/guides/coupon-vs-yield/">
+  <link rel="icon" href="../../favicon-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="채다">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="표면금리 3%인데, 수익률은 왜 다를까요?">
+  <meta property="og:description" content="이자를 계산하는 기준과 내가 산 가격은 다릅니다. 액면금액 1만원 예시로 표면금리·이자수익률·만기수익률을 구분해 보세요.">
+  <meta property="og:url" content="https://chaeda.kr/guides/coupon-vs-yield/">
+  <meta property="og:image" content="https://chaeda.kr/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0..1,0">
+  <link rel="stylesheet" href="../../styles.css?v=acquisition-20261022-2">
+  <style>
+    body{background:#f8faf9}.cg-wrap{max-width:880px;margin:0 auto;padding:0 24px}.cg-hero{padding:68px 0 36px}.cg-crumbs{display:flex;flex-wrap:wrap;gap:9px;font-size:13px;color:var(--g700)}.cg-kicker{margin:34px 0 14px;color:var(--mint700);font-size:13px;font-weight:800}.cg-hero h1{max-width:720px;font-size:clamp(32px,5.8vw,52px);line-height:1.22;letter-spacing:-.045em}.cg-lede{max-width:670px;margin:24px 0 0;color:var(--g800);font-size:18px;line-height:1.8}.cg-meta{margin:18px 0 0;color:var(--g700);font-size:12px}.cg-article{padding-bottom:64px}.cg-answer{padding:24px 28px;border-radius:22px;background:var(--mint100);border:1px solid #b5ded4;font-size:18px;line-height:1.8;color:var(--mint900)}.cg-answer strong{font-weight:850}.cg-section{margin-top:28px;padding:30px;border-radius:22px;border:1px solid #e1e9e5;background:white;scroll-margin-top:90px}.cg-section h2{font-size:25px;line-height:1.4}.cg-section h3{font-size:18px;line-height:1.5;margin:28px 0 8px}.cg-section p,.cg-section li{font-size:16px;line-height:1.85;color:var(--g800)}.cg-section p{margin:16px 0 0}.cg-section ul,.cg-section ol{margin:16px 0 0;padding-left:22px}.cg-section li+li{margin-top:9px}.cg-equation{margin:22px 0 0;padding:22px;border-radius:16px;background:#f2f7f4;font-size:18px;font-weight:750;line-height:1.8}.cg-equation small{display:block;margin-top:6px;font-size:13px;font-weight:450;color:var(--g700)}.cg-table{width:100%;border-collapse:collapse;margin-top:20px;font-size:14px;text-align:left}.cg-table caption{text-align:left;font-weight:750;margin-bottom:10px}.cg-table th,.cg-table td{padding:14px 12px;border-bottom:1px solid #e5ece8;vertical-align:top;line-height:1.6}.cg-table th{font-weight:750;background:#f4f7f5;color:#354b42}.cg-table tbody th{width:42%;background:white}.cg-table .cg-highlight td,.cg-table .cg-highlight th{background:#eaf6f0}.cg-flow{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;margin-top:22px}.cg-flow>div{padding:22px 14px;border-radius:18px;text-align:center;background:#f4f7f5}.cg-flow>div:last-child{background:var(--mint100)}.cg-flow span{display:block;font-size:13px;color:#4c6056}.cg-flow b{display:block;margin-top:8px;font-size:29px;letter-spacing:-.035em}.cg-flow small{display:block;margin-top:9px;font-size:12px;color:#4c6056}.cg-flow>span{font-size:21px}.cg-note{padding:17px 18px;border-left:4px solid var(--mint500);background:#f6f8f6;border-radius:0 12px 12px 0}.cg-note p{margin:0;font-size:14px}.cg-cta{margin-top:30px;padding:30px;border-radius:22px;background:var(--mint900);color:white}.cg-cta h2{font-size:25px;line-height:1.4}.cg-cta p{margin:14px 0 0;max-width:650px;font-size:15px;line-height:1.8;color:#e0f2eb}.cg-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}.cg-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 18px;border-radius:13px;border:1px solid #92c7b6;background:transparent;color:white;font-size:14px;font-weight:750}.cg-actions a:first-child{background:white;border-color:white;color:var(--mint900)}.cg-actions a:hover{background:#e0f2eb;color:var(--mint900)}.cg-actions a:focus-visible,.cg-article a:focus-visible,.cg-crumbs a:focus-visible{outline:3px solid #e0a526;outline-offset:4px}.cg-cta .cg-cta-small{font-size:12px;color:#d3e9df}.cg-related{display:block;margin-top:16px;line-height:1.8;font-weight:650}.cg-sources li{font-size:13px;line-height:1.8}.cg-sources a{text-decoration:underline;text-underline-offset:3px}.cg-footer-note{font-size:12px!important;color:#616f67!important}.cg-fallback-footer{padding:28px 24px;max-width:880px;margin:auto;color:var(--g700);font-size:12px;line-height:1.8}@media(max-width:600px){.cg-wrap{padding:0 18px}.cg-hero{padding:36px 0 24px}.cg-kicker{margin-top:24px}.cg-lede{font-size:16px}.cg-section,.cg-cta{padding:24px 20px;border-radius:18px}.cg-answer{padding:22px 20px;font-size:16px}.cg-section h2,.cg-cta h2{font-size:22px}.cg-section p,.cg-section li{font-size:15px}.cg-equation{font-size:16px;padding:18px}.cg-flow{gap:8px}.cg-flow>div{padding:18px 9px}.cg-flow b{font-size:24px}.cg-flow small{font-size:11px}.cg-table th,.cg-table td{padding:12px 8px}.cg-actions{flex-direction:column}.cg-actions a{width:100%}}
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"표면금리와 수익률은 왜 다를까요?","description":"액면금액 1만원 예시로 표면금리·이자수익률·만기수익률의 차이를 설명합니다.","inLanguage":"ko-KR","datePublished":"2026-10-22","dateModified":"2026-10-22","author":{"@type":"Organization","name":"채다"},"mainEntityOfPage":"https://chaeda.kr/guides/coupon-vs-yield/"}
+  </script>
+</head>
+<body data-page="coupon-vs-yield" data-base="../../" data-guide>
+  <header class="hdr" id="hdr">
+    <a class="skip" href="#main">본문 바로가기</a>
+    <div class="wrap"><a class="brand" href="../../"><span class="mark" aria-hidden="true">채</span><span class="brandname">채다</span></a><nav class="nav" aria-label="주요 메뉴"><a href="../../">소개</a><a href="../bond-yield-structure/">채권 수익 구조</a><a href="../../support.html">지원 · 문의</a></nav></div>
+  </header>
+  <main id="main" class="cg-wrap">
+    <div class="cg-hero">
+      <nav class="cg-crumbs" aria-label="현재 위치"><a href="../../">채다</a><span aria-hidden="true">/</span><span>채권 가이드</span></nav>
+      <p class="cg-kicker">채권 입문 · 금리와 수익률</p>
+      <h1>표면금리 3%인데,<br>수익률은 왜 다를까요?</h1>
+      <p class="cg-lede">같은 채권에도 금리가 여러 개 보입니다. <strong>이자를 계산하는 기준</strong>과 <strong>내가 산 가격으로 보는 수익</strong>을 나누면 이해하기 쉽습니다.</p>
+      <p class="cg-meta">채다 편집 · 2026년 10월 22일 확인 · 읽는 시간 약 4분</p>
+    </div>
+    <article class="cg-article" aria-label="표면금리와 수익률 설명">
+      <div class="cg-answer"><strong>표면금리</strong>는 액면금액에 적용하는 이자율입니다.<br><strong>만기수익률</strong>은 매입가격과 앞으로 받을 이자·상환금, 받는 시점을 함께 반영한 연간 수익률입니다.</div>
+      <section class="cg-section" id="coupon">
+        <h2>1. 표면금리는 ‘이자 계산용’입니다</h2>
+        <p>고정금리 이표채를 예로 들어볼게요. 액면금액은 이자를 계산하고 만기 상환금을 정할 때 쓰는 기준 금액입니다. <strong>액면금액 1만원, 표면금리 연 3%</strong>라면 1년치 세전 약정 이자는 300원입니다.</p>
+        <div class="cg-equation">10,000원 × 연 3% = 1년에 300원<small>실제 지급 횟수와 날짜는 종목의 약정에 따라 다릅니다.</small></div>
+        <p>이 채권을 9,800원에 샀더라도 표면금리를 적용하는 기준이 9,800원으로 바뀌지는 않습니다. <strong>같은 액면금액을 보유하면 약정 이자는 같고, 내가 산 가격은 다를 수 있습니다.</strong></p>
+      </section>
+      <section class="cg-section" id="example">
+        <h2>2. 산 가격이 달라지면 수익률도 달라집니다</h2>
+        <p>계산을 단순하게 만들기 위해 아래 조건을 고정하겠습니다. 실제 거래 종목이나 현재 시세를 뜻하는 예시는 아닙니다.</p>
+        <table class="cg-table"><caption>계산 예시의 조건</caption><tbody>
+          <tr><th scope="row">액면금액 / 표면금리</th><td>10,000원 / 고정 연 3%</td></tr>
+          <tr><th scope="row">남은 기간 / 지급 방식</th><td>정확히 1년 / 1년 뒤 이자 300원과 액면금액을 한 번에 지급</td></tr>
+          <tr><th scope="row">오늘의 총 매입금액</th><td>9,800원</td></tr>
+          <tr><th scope="row">추가 가정</th><td>경과이자 0원, 세금·수수료 제외, 조기상환 없이 만기까지 보유, 원리금이 약정대로 지급됨</td></tr>
+        </tbody></table>
+        <div class="cg-flow" role="img" aria-label="오늘 9,800원을 지출하고 정확히 1년 뒤 이자 300원과 상환금 10,000원을 합한 10,300원을 받는 가정">
+          <div><span>오늘 매입</span><b>−9,800원</b><small>내가 지출하는 금액</small></div><span aria-hidden="true">→</span><div><span>정확히 1년 뒤</span><b>+10,300원</b><small>이자 300원＋상환금 10,000원</small></div>
+        </div>
+        <p>받는 돈 10,300원에서 산 금액 9,800원을 빼면 세전 이익은 500원입니다. 이자 300원에, 액면금액보다 200원 싸게 산 차이가 더해집니다.</p>
+        <div class="cg-equation">500원 ÷ 9,800원 × 100 ≈ 5.10%<small>이 예시는 현금이 정확히 1년 뒤 한 번만 들어와, 세전 1년 보유 수익률과 만기수익률이 같습니다.</small></div>
+        <p class="cg-note">여러 번 이자를 받거나 남은 기간이 다르면 위처럼 단순히 나눈 값을 만기수익률로 부르면 안 됩니다. 만기수익률은 각 돈을 <strong>언제 받는지</strong>도 반영해 계산합니다.</p>
+      </section>
+      <section class="cg-section" id="yield-types">
+        <h2>3. ‘이자만 본 비율’과도 구분하세요</h2>
+        <p>연간 약정 이자 300원을 산 가격 9,800원으로 나누면 약 <strong>3.06%</strong>입니다. 이 값은 이자만 매입가격과 비교한 <strong>이자수익률(current yield)</strong>에 해당합니다. 만기 상환 때 생기는 200원 차이는 포함하지 않습니다.</p>
+        <table class="cg-table"><caption>같은 예시에서 숫자가 달라지는 이유</caption><thead><tr><th scope="col">어떤 값인가요?</th><th scope="col">이 예시의 값</th><th scope="col">무엇을 보나요?</th></tr></thead><tbody>
+          <tr><th scope="row">표면금리</th><td>연 3.00%</td><td>액면금액 대비 약정 이자</td></tr>
+          <tr><th scope="row">이자수익률</th><td>약 3.06%</td><td>매입가격 대비 연간 약정 이자</td></tr>
+          <tr class="cg-highlight"><th scope="row">만기수익률</th><td>약 5.10%</td><td>매입가격과 남은 이자·상환금, 받는 시점</td></tr>
+        </tbody></table>
+        <p>화면에 ‘수익률’이라고만 적혀 있다면 <strong>무슨 수익률인지, 세전인지 세후인지, 어떤 가격과 날짜를 기준으로 했는지</strong>를 먼저 확인하세요.</p>
+      </section>
+      <section class="cg-section" id="price">
+        <h2>4. 비싸게 사면 반대로 낮아질 수 있습니다</h2>
+        <p>앞선 예시에서 받는 돈과 시점을 그대로 두고 매입가격만 바꿔보겠습니다.</p>
+        <table class="cg-table"><caption>동일한 1년 만기 현금흐름, 다른 매입가격</caption><thead><tr><th scope="col">매입가격</th><th scope="col">1년 뒤 받는 돈</th><th scope="col">세전 만기수익률</th></tr></thead><tbody>
+          <tr><td>9,800원</td><td>10,300원</td><td>약 5.10%</td></tr>
+          <tr><td>10,000원</td><td>10,300원</td><td>3.00%</td></tr>
+          <tr><td>10,200원</td><td>10,300원</td><td>약 0.98%</td></tr>
+        </tbody></table>
+        <p><strong>다른 조건과 남은 현금흐름이 같다면</strong> 산 가격이 낮을수록 만기수익률은 높아집니다. 표면금리가 높다는 이유만으로 내가 얻을 수익률도 더 높다고 판단하기 어려운 이유입니다.</p>
+      </section>
+      <section class="cg-section" id="check">
+        <h2>실제 채권 화면에서는 이 네 가지를 확인하세요</h2>
+        <ol><li><strong>표면금리와 지급 주기:</strong> 이자를 어떤 기준으로, 언제 주는지 봅니다.</li><li><strong>내 매입가격과 날짜:</strong> 화면의 종가와 실제 매입가격은 다를 수 있습니다. 경과이자·수수료도 확인합니다.</li><li><strong>수익률의 종류와 조건:</strong> 만기수익률인지, 세전·세후 중 무엇인지 구분합니다.</li><li><strong>상환 조건과 위험:</strong> 중도매도, 조기상환, 발행사의 지급 불이행 가능성을 함께 확인합니다.</li></ol>
+        <p>만기 전에 팔면 그때의 가격과 거래 여건이 결과에 영향을 줍니다. 또 발행사가 약정대로 이자나 원금을 지급하지 못하면 계산한 현금흐름과 달라질 수 있습니다. <strong>계산된 수익률은 실제 수익을 보장하지 않습니다.</strong></p>
+        <a class="cg-related" href="../bond-yield-structure/">함께 읽기 · 적금·예금과 비교하는 채권 수익 구조 →</a>
+      </section>
+      <aside class="cg-cta" aria-labelledby="next-title">
+        <h2 id="next-title">개념을 알았다면, 화면에서도 살펴보세요</h2>
+        <p>채다의 예시 웹 체험에서 채권을 고르고 상세 정보를 살펴볼 수 있습니다. 앱에서는 채권 정보를 검색하고 내가 가진 채권을 직접 기록하는 흐름을 확인해 보세요.</p>
+        <div class="cg-actions"><a href="../../#features" data-acquisition-action="experience" data-placement="guide">예시 데이터로 체험하기</a><a href="https://apps.apple.com/kr/app/id6794857475" data-store="apple" data-placement="guide">App Store에서 보기</a><a href="https://play.google.com/store/apps/details?id=com.chaeda.app&amp;hl=ko" data-store="play" data-placement="guide">Google Play에서 보기</a></div>
+        <p class="cg-cta-small">웹 체험은 예시 데이터이며 실제 거래가 아닙니다. 채다는 정보·관리 도구로 매수·매도 중개나 개인 맞춤 투자 추천을 제공하지 않습니다.</p>
+      </aside>
+      <section class="cg-section cg-sources" id="sources">
+        <h2>설명에 참고한 공식 자료</h2>
+        <ul><li><a href="https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/what-are" rel="noopener noreferrer" target="_blank">미국 SEC Investor.gov · What Are Corporate Bonds?</a> — 고정 표면금리, 만기수익률, 가격 및 지급 불이행 위험 설명</li><li><a href="https://www.investor.gov/introduction-investing/investing-basics/glossary/current-yield" rel="noopener noreferrer" target="_blank">미국 SEC Investor.gov · Current Yield</a> — 연간 이자와 가격을 비교하는 이자수익률의 정의</li><li><a href="https://www.bok.or.kr/portal/bbs/B0000217/view.do?menuNo=200144&amp;nttId=10047980" rel="noopener noreferrer" target="_blank">한국은행 · 우리나라 채권시장의 이해와 최근 동향</a> — 채권시장과 가격·금리의 관계에 관한 교육 자료</li></ul>
+        <p class="cg-footer-note">자료 확인일: 2026-10-22. 해외 자료는 일반적인 채권 개념에만 참고했으며 국내 세금·거래 관행의 근거로 사용하지 않았습니다. 숫자는 위 조건으로 직접 계산한 교육용 예시입니다.</p>
+      </section>
+    </article>
+  </main>
+  <footer class="ftr" id="ftr"><div class="cg-fallback-footer">채다 · 채권 정보·관리 도구<br><a href="../../support.html">지원 · 문의</a> · <a href="../../privacy.html">개인정보처리방침</a></div></footer>
+  <script src="../../content.js?v=acquisition-20261022-2"></script>
+  <script src="../../app.js?v=acquisition-20261022-2"></script>
+  <script src="../../acquisition.js?v=acquisition-20261022-2"></script>
+  <script src="../../acquisition-config.js?v=acquisition-20261022-2"></script>
+  <script src="../../posthog-acquisition.js?v=acquisition-20261022-2"></script>
+</body>
+</html>

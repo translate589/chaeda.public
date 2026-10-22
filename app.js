@@ -1,5 +1,41 @@
 /* 채다 지원 사이트 — 렌더러
  * 문구·데이터는 모두 content.js 에 있습니다. 이 파일은 구조/동작만 담당합니다. */
+/* 기존 수익구조 가이드의 재생성 사본을 수정하지 않고 공용 유입 스크립트를 연결한다. */
+(function (win, doc) {
+  var paths = ['/guides/bond-yield-structure/', '/guides/bond-yield-structure/index.html'];
+  if (paths.indexOf(win.location.pathname) === -1 || win.__chaedaGuideAcquisitionBootstrap) return;
+  var source = doc.currentScript && doc.currentScript.src;
+  var base;
+  try { base = new URL(source, win.location.href); } catch (error) { return; }
+  // 이 공용 app.js와 같은 출처·디렉터리의 정해진 세 파일만 불러온다.
+  if (!source || base.origin !== win.location.origin || !/\/app\.js$/.test(base.pathname)) return;
+  var page = doc.body.getAttribute('data-page');
+  if (['home', 'coupon-vs-yield', 'bond-yield-structure'].indexOf(page) === -1) doc.body.setAttribute('data-page', 'bond-yield-structure');
+  win.__chaedaGuideAcquisitionBootstrap = 'loading';
+  win.CHAEDA_ACQUISITION_MANUAL_START = true;
+  var files = ['acquisition.js', 'acquisition-config.js', 'posthog-acquisition.js'];
+  var finished = false;
+  function finish(failed) {
+    if (finished) return;
+    finished = true;
+    win.CHAEDA_ACQUISITION_MANUAL_START = false;
+    win.__chaedaGuideAcquisitionBootstrap = failed ? 'failed' : 'ready';
+    if (win.ChaedaAcquisition && typeof win.ChaedaAcquisition.install === 'function') win.ChaedaAcquisition.install(win);
+  }
+  function load(index) {
+    if (index === files.length) { finish(false); return; }
+    var url = new URL(files[index], base);
+    url.search = '?v=acquisition-20261022-2';
+    var script = doc.createElement('script');
+    script.src = url.href;
+    script.async = false;
+    script.onload = function () { load(index + 1); };
+    script.onerror = function () { finish(true); };
+    try { doc.head.appendChild(script); } catch (error) { finish(true); }
+  }
+  load(0);
+})(window, document);
+
 (function () {
   var C = window.CHAEDA_CONTENT;
   var esc = function (s) {
