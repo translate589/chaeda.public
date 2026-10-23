@@ -21,6 +21,7 @@ window.CHAEDA_CONTENT = {
         { key: 'coupon-vs-yield', label: '표면금리와 수익률 차이', file: 'guides/coupon-vs-yield/index.html' },
         { key: 'bond-yield-structure', label: '채권 수익 구조 가이드', file: 'guides/bond-yield-structure/index.html' }
       ] },
+      { key: 'feedback', label: '의견 남기기', file: 'feedback/', feedbackOnly: true },
       { key: 'support', label: '지원 · 문의', file: 'support.html' }
     ]
   },

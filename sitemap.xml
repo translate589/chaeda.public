@@ -11,6 +11,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://chaeda.kr/feedback/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://chaeda.kr/guides/coupon-vs-yield/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

@@ -55,6 +55,7 @@
    * <base href> 는 가이드의 #s1 같은 프래그먼트 링크까지 바꿔버리므로 쓰지 않는다. */
   var BASE = document.body.getAttribute('data-base') || '';
   var href = function (file) { return BASE + file; };
+  var feedbackHost = ['chaeda.kr', 'www.chaeda.kr', 'localhost', '127.0.0.1', '[::1]', '::1'].indexOf(window.location.hostname.toLowerCase()) !== -1;
 
   /* 아이콘 매핑 (구조 정보 — 문구 아님) */
   var FEATURE_ICON = {
@@ -85,7 +86,9 @@
     var ftr = el('ftr');
 
     if (hdr) {
-      var nav = C.site.nav.map(function (n) {
+      var nav = C.site.nav.filter(function (n) {
+        return !n.feedbackOnly || feedbackHost;
+      }).map(function (n) {
         if (n.children) {
           var active = n.children.some(function (c) { return c.key === page; });
           var items = n.children.map(function (c) {
