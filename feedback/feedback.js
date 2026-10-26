@@ -295,13 +295,6 @@
     }
 
     var local = element('div', 'fb-local');
-    var notice = element('aside', 'fb-test-notice');
-    notice.setAttribute('aria-label', '로컬 테스트 안내');
-    notice.appendChild(element('span', 'fb-test-dot'));
-    var noticeText = element('div');
-    noticeText.appendChild(element('strong', '', '로컬 테스트 · 메시지와 댓글이 저장돼요'));
-    noticeText.appendChild(element('p', '', '입력한 내용은 로컬 DB에 저장되어 새로고침해도 유지돼요. 같은 브라우저에서 작성한 글을 삭제할 수 있어요. 브라우저 데이터를 지우면 삭제 권한이 사라집니다.'));
-    notice.appendChild(noticeText); local.appendChild(notice);
     var operatorGuide = element('p', 'fb-operator-guide');
     operatorGuide.appendChild(operatorBadge());
     operatorGuide.appendChild(doc.createTextNode(' 뱃지는 운영자가 쓴 메시지와 댓글의 닉네임 왼쪽에 표시돼요. 별명 대신 뱃지로 운영자를 확인해 주세요.'));
