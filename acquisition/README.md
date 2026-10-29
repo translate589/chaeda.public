@@ -45,6 +45,8 @@ node --test legacy-guide-acquisition.test.js
 
 아래 주소는 **새 가이드가 배포된 다음** 외부 글에 사용한다. 값은 자유 입력 대신 `acquisition.js`의 허용 목록에서 선택한다.
 
+현재 광고 동선인 `광고 → 인스타 프로필 → 프로필의 스토어 링크`는 웹을 지나지 않으므로 아래 웹 UTM과 `web_store_click`으로 측정되지 않는다. 아래의 ‘인스타 프로필’ 주소는 운영자가 프로필 링크를 웹 가이드로 바꾸기로 별도 결정한 경우에만 사용한다. 여러 광고가 같은 인스타 프로필로 모이면 프로필의 단일 링크만으로 원 광고 소재를 구분할 수도 없다.
+
 | 위치 | 주소 |
 |---|---|
 | 인스타 프로필 | `https://chaeda.kr/guides/coupon-vs-yield/?utm_source=instagram&utm_medium=organic_social&utm_campaign=coupon_vs_yield_202610&utm_content=profile` |
@@ -64,6 +66,8 @@ node --test legacy-guide-acquisition.test.js
 | `web_demo_interest` | 예시 체험 구역으로 가는 링크 클릭 | 실제 체험 시작 |
 | `web_demo_start` | 홈의 ‘체험하기’ 버튼 클릭 | iframe 로드 성공·체험 완료 |
 | `web_store_click` | 채다의 Apple·Google 스토어 링크 클릭 | 설치·회원가입·활성 사용자 |
+
+`web_store_click`은 `store`(`apple` 또는 `play`), `placement`(`hero` 또는 `guide` 등), 허용된 UTM 속성으로 나눠 볼 수 있다. 같은 페이지에서 같은 임시 ID로 발생한 반복 클릭은 총 클릭과 중복 제거 클릭을 구분하는 데 사용할 수 있지만, 새로고침·다른 페이지·재방문 때 ID가 바뀌므로 장기간의 실제 순방문자 수로 해석하지 않는다.
 
 이벤트 속성은 허용된 `page`, 캠페인 값, `placement`, 스토어 종류뿐이다. 전체 URL·referrer·자유 입력·보유 금액은 전달하지 않는다. 예시 체험 내부 입력은 읽지 않는다. 새로고침하면 메모리 기록은 초기화된다.
 
@@ -85,7 +89,7 @@ ChaedaPostHogAcquisition.status()
 
 ## 공개 활성화 전 검토할 고지 초안
 
-현재 개인정보처리방침의 외부 서비스·국외 이전 표에는 PostHog가 없고, 자동 수집 안내는 모바일 앱 도구 중심이다. 정책 원문은 이번 작업에서 임의로 변경하지 않았다. 아래는 실제 운영 조건을 확인한 뒤 고지에 반영할 검토용 내용이다.
+현재 개인정보처리방침의 외부 서비스·국외 이전 표에는 PostHog가 없고, 자동 수집 안내는 모바일 앱 도구 중심이다. 승인된 웹사이트 이용 정보 수집·분석 요약 문구만 반영했으며, PostHog와 국외 이전에 관한 세부 고지는 아직 검토 중이다. 아래는 실제 운영 조건을 확인한 뒤 고지에 반영할 검토용 내용이다.
 
 ### 구현에서 확인한 사항
 

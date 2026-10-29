@@ -121,6 +121,24 @@ test('가이드 열기·체험 관심·실제 시작·스토어 클릭을 각각
   assert.equal(api.snapshot().at(-1).properties.store, 'play');
 });
 
+test('Apple·Google 스토어 반복 클릭은 동작마다 한 건씩 기록하고 외부 이동 주소를 바꾸지 않는다', () => {
+  const api = fresh();
+  const env = environment();
+  api.install(env.win);
+  const apple = env.element({ href: 'https://apps.apple.com/kr/app/id6794857475', 'data-placement': 'hero' });
+  const play = env.element({ href: 'https://play.google.com/store/apps/details?id=com.chaeda.app&hl=ko', 'data-placement': 'guide' });
+  env.click(apple);
+  env.click(play);
+  env.click(play);
+  assert.deepEqual(api.snapshot().slice(1), [
+    { event: 'web_store_click', properties: { page: 'home', utm_source: 'instagram', utm_medium: 'organic_social', utm_campaign: 'coupon_vs_yield_202610', utm_content: 'profile', store: 'apple', placement: 'hero' } },
+    { event: 'web_store_click', properties: { page: 'home', utm_source: 'instagram', utm_medium: 'organic_social', utm_campaign: 'coupon_vs_yield_202610', utm_content: 'profile', store: 'play', placement: 'guide' } },
+    { event: 'web_store_click', properties: { page: 'home', utm_source: 'instagram', utm_medium: 'organic_social', utm_campaign: 'coupon_vs_yield_202610', utm_content: 'profile', store: 'play', placement: 'guide' } }
+  ]);
+  assert.equal(apple.getAttribute('href'), 'https://apps.apple.com/kr/app/id6794857475');
+  assert.equal(play.getAttribute('href'), 'https://play.google.com/store/apps/details?id=com.chaeda.app&hl=ko');
+});
+
 test('가이드 목차 앵커·다른 앱 링크·처음부터 버튼은 신규 유입·실제 시작으로 세지 않는다', () => {
   const api = fresh();
   const env = environment('coupon-vs-yield', 'https://chaeda.kr/guides/coupon-vs-yield/' + valid);
