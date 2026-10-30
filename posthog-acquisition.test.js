@@ -32,6 +32,13 @@ function environment(configOverrides = {}, windowOverrides = {}) {
   return { win, config, requests, emit, hasAdapter: () => typeof handler === 'function' };
 }
 
+test('배포 설정은 운영 웹 수집을 활성화한다', () => {
+  const context = { window: {} };
+  vm.runInNewContext(fs.readFileSync(require.resolve('./acquisition-config.js'), 'utf8'), context);
+  assert.equal(context.window.CHAEDA_WEB_ANALYTICS.enabled, true);
+  assert.deepEqual(Array.from(context.window.CHAEDA_WEB_ANALYTICS.productionHosts), ['chaeda.kr', 'www.chaeda.kr']);
+});
+
 test('공개 활성화가 꺼져 있으면 설정만 확인하고 외부 전송기를 연결하지 않는다', () => {
   const api = fresh();
   const env = environment({ enabled: false });
@@ -210,8 +217,8 @@ test('홈·가이드의 실제 script 속성과 파서 시점에서도 첫 페�
     const deferred = [];
     function execute(script) {
       vm.runInNewContext(fs.readFileSync(require.resolve('./' + script.name), 'utf8'), context);
-      // 공개 설정은 비활성 그대로 두고 테스트 안에서만 전송 가능 상태를 모델링한다.
-      if (script.name === 'acquisition-config.js') env.win.CHAEDA_WEB_ANALYTICS = { ...env.win.CHAEDA_WEB_ANALYTICS, enabled: true, projectToken: TOKEN };
+      // 운영 토큰 대신 테스트 토큰을 사용하고 실제 네트워크 요청은 가짜 fetch로 받는다.
+      if (script.name === 'acquisition-config.js') env.win.CHAEDA_WEB_ANALYTICS = { ...env.win.CHAEDA_WEB_ANALYTICS, projectToken: TOKEN };
     }
     for (const script of scripts) {
       if (/\bdefer\b/.test(script.attrs)) deferred.push(script);
