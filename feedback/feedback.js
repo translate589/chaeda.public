@@ -241,7 +241,7 @@
     function fit(textarea) {
       textarea.style.height = 'auto';
       var max = textarea.classList.contains('fb-comment-textarea') ? 220 : 340;
-      var min = textarea.classList.contains('fb-comment-textarea') ? 66 : 96;
+      var min = textarea.classList.contains('fb-comment-textarea') ? 66 : 150;
       textarea.style.height = Math.min(max, Math.max(min, textarea.scrollHeight)) + 'px';
     }
     function fitVisible() { Array.prototype.forEach.call(app.querySelectorAll('textarea'), fit); }
@@ -255,6 +255,10 @@
       if (minutes < 60) return minutes + '분 전';
       if (minutes < 1440) return Math.floor(minutes / 60) + '시간 전';
       return Math.floor(minutes / 1440) + '일 전';
+    }
+    // 카드 색은 의견이 저마다 다르다는 것을 보여 주는 장식이다. 같은 메시지는 항상 같은 색을 쓴다.
+    function cardTone(id) {
+      return Array.from(String(id)).reduce(function (sum, char) { return sum + char.codePointAt(0); }, 0) % 5;
     }
     function avatar(name, own) {
       var tone = Array.from(name).reduce(function (sum, char) { return sum + char.codePointAt(0); }, 0) % 4;
@@ -298,7 +302,6 @@
     var operatorGuide = element('p', 'fb-operator-guide');
     operatorGuide.appendChild(operatorBadge());
     operatorGuide.appendChild(doc.createTextNode(' 뱃지는 운영자가 쓴 메시지와 댓글의 닉네임 왼쪽에 표시돼요. 별명 대신 뱃지로 운영자를 확인해 주세요.'));
-    local.appendChild(operatorGuide);
 
     function composer(options) {
       var key = options.parentId || 'new-message';
@@ -355,18 +358,18 @@
       return form;
     }
 
-    local.appendChild(composer({}));
     var section = element('section', 'fb-feed-section'); section.setAttribute('aria-labelledby', 'feedbackFeedTitle');
     var heading = element('div', 'fb-feed-heading');
     var feedTitle = element('h2', '', '나눈 이야기'); feedTitle.id = 'feedbackFeedTitle';
     var count = element('span'); feedTitle.appendChild(count); heading.appendChild(feedTitle);
     var order = element('span', 'fb-feed-order', '최신 메시지부터'); heading.appendChild(order); section.appendChild(heading);
-    section.appendChild(element('p', 'fb-feed-help', '짧은 메시지를 남기고 댓글로 이야기를 이어가요.'));
     var status = element('div', 'fb-feed-status'); status.setAttribute('role', 'status'); section.appendChild(status);
     var refresh = element('button', 'fb-text-button fb-refresh', '새로 불러오기'); refresh.type = 'button';
     refresh.addEventListener('click', function () { loadMessages(true); }); heading.appendChild(refresh);
-    var feed = element('ol', 'fb-feed'); section.appendChild(feed);
-    var moreWrap = element('div', 'fb-more-wrap'); section.appendChild(moreWrap); local.appendChild(section);
+    // 작성 칸을 보드의 첫 카드로 두고, 메시지 카드가 같은 격자에 이어지게 한다.
+    var board = element('div', 'fb-board'); board.appendChild(composer({}));
+    var feed = element('ol', 'fb-feed'); feed.setAttribute('role', 'list'); board.appendChild(feed); section.appendChild(board);
+    var moreWrap = element('div', 'fb-more-wrap'); section.appendChild(moreWrap); local.appendChild(section); local.appendChild(operatorGuide);
     var foot = element('p', 'fb-footer-note'); foot.appendChild(doc.createTextNode('개인적인 문의는 '));
     var support = element('a', '', '지원 · 문의'); support.href = '../support.html'; foot.appendChild(support); foot.appendChild(doc.createTextNode('를 이용해 주세요.')); local.appendChild(foot);
     app.replaceChildren(local);
@@ -382,7 +385,7 @@
       else if (loaded && !messages.length) status.appendChild(element('p', 'fb-empty', '첫 이야기를 남겨 주세요.'));
       feed.replaceChildren();
       visible.forEach(function (message) {
-        var item = element('li', 'fb-feed-item');
+        var item = element('li', 'fb-feed-item tone-' + cardTone(message.id));
         var article = element('article', 'fb-message'); article.id = message.id; article.tabIndex = -1; article.setAttribute('aria-label', message.nickname + '님의 메시지');
         article.appendChild(avatar(message.nickname, message.own));
         var main = element('div', 'fb-message-main'); main.appendChild(meta(message, false)); main.appendChild(element('p', 'fb-message-body', message.body));

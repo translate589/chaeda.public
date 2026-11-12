@@ -26,3 +26,27 @@ body[data-page="feedback"]{background:#f7f9f6;color:#173d34}
 /* API 연결 상태와 다시 불러오기는 피드 안에서 안내한다. */
 .fb-feed-status:empty{display:none}.fb-feed-status{margin:16px 0;padding:12px 16px;border-radius:12px;background:#edf3ed}.fb-feed-status .fb-form-error{margin:0}.fb-empty{margin:0;color:#6c8172;font-size:13px;line-height:1.8}.fb-refresh{margin-left:auto;white-space:nowrap}.fb-more:disabled,.fb-text-button:disabled,.fb-delete-confirm button:disabled{opacity:.5;cursor:wait}
 @media(max-width:600px){.fb-feed-heading{flex-wrap:wrap;gap:6px 12px}.fb-feed-order{margin-left:auto}.fb-refresh{margin-left:0;font-size:11px}.fb-feed-status{padding:12px}}
+
+/* 메모 보드. 작성 칸을 첫 카드로 두고 메시지를 색 카드로 놓는다. 카드 색은 장식이며 의미를 담지 않는다. */
+.fb-shell{max-width:1080px}.fb-intro{max-width:720px}.fb-eyebrow{font-size:13px;letter-spacing:0;color:var(--mint700)}.fb-lede{color:var(--g800)}
+.fb-feed-section{margin-top:8px}.fb-feed-heading{align-items:center;flex-wrap:wrap;gap:4px 16px;padding-bottom:10px;border-bottom:2px solid #173d34}.fb-feed-heading h2 span{color:var(--mint700);font-size:18px;font-weight:780}
+.fb-feed-order{margin-left:auto;font-size:13px;color:var(--g700)}.fb-refresh{margin-left:0;min-height:44px;font-size:13px;font-weight:650;color:var(--mint700)}
+.fb-board{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr));gap:20px;align-items:start;margin-top:24px}.fb-feed{display:contents}
+.fb-board>.fb-composer{grid-row:span 2;min-width:0;padding:20px;border:2px dashed var(--mint400);border-radius:20px;box-shadow:none}
+.fb-composer-prompt{font-size:16px}.fb-composer>.fb-textarea{min-height:150px;padding:14px;border-radius:12px;background:#f7f9f6;font-size:15px;line-height:1.6}.fb-composer>.fb-textarea:focus-visible{border-radius:12px;box-shadow:0 0 0 2px var(--mint500)}
+.fb-composer .fb-form-meta{padding-top:8px;border-top:0}.fb-visibility,.fb-counter{font-size:12px;color:var(--g700)}.fb-nickname-label{font-size:12px;color:var(--g700)}
+.fb-composer .fb-form-bottom{flex-direction:column;align-items:stretch;gap:12px;margin-top:12px}.fb-composer .fb-nickname{width:100%;height:44px;border-color:var(--g300);border-radius:12px;background:#fff;font-size:14px}
+.fb-submit{min-height:48px;border-radius:12px;background:var(--mint700);font-size:15px}.fb-submit:hover:not(:disabled){background:var(--mint900)}
+.fb-feed-item{min-width:0;padding:20px;border-radius:20px;background:var(--mint100)}.fb-feed-item:not(:last-child)::before{content:none}
+.fb-feed-item.tone-1{background:var(--amber100)}.fb-feed-item.tone-2{background:var(--sky100)}.fb-feed-item.tone-3{background:var(--lav100)}.fb-feed-item.tone-4{background:var(--peach100)}
+.fb-message,.fb-comment{display:block}.fb-avatar{display:none}.fb-message-main{padding-top:0}
+.fb-author{font-size:13px;color:#173d34}.fb-time{font-size:12px;color:var(--g800)}.fb-own-label{padding:2px 6px;background:#fff;color:var(--mint700);font-size:11px}
+.fb-message-body{margin-top:8px;color:#173d34;font-size:16px;line-height:1.7}.fb-message-actions{margin-top:6px}
+.fb-text-button{min-height:44px;font-size:13px;font-weight:650;color:var(--mint700)}.fb-text-button:hover{color:var(--mint900)}.fb-text-button.is-delete{font-size:12px;font-weight:400;color:var(--g800)}
+.fb-thread{margin:6px 0 0;padding:14px;border-left:0;border-radius:12px;background:#fff}.fb-comment{margin-bottom:14px}.fb-comment .fb-author{font-size:13px}.fb-comment .fb-time{font-size:12px}.fb-comment .fb-message-body{margin-top:4px;font-size:14px;line-height:1.6}
+.fb-comment-composer{margin-top:8px;padding:12px;border:0;border-radius:12px;background:#f7f9f6}.fb-comment-composer .fb-composer-prompt{font-size:12px;color:var(--g800)}.fb-comment-composer .fb-form-meta{border-top:0}
+.fb-comment-composer .fb-form-bottom{flex-direction:column;align-items:stretch;gap:8px}.fb-comment-composer .fb-nickname{width:100%;height:40px;border-color:var(--g300);background:#fff;font-size:14px}.fb-comment-composer .fb-submit{min-height:44px;border-radius:12px;background:var(--mint700);font-size:13px}
+.fb-delete-confirm{border-color:var(--g300);background:#fff}.fb-operator-badge{background:var(--mint700)}
+.fb-feed-status{background:#fff;border:1px solid var(--g300)}.fb-end,.fb-empty{font-size:13px;color:var(--g700)}.fb-more-wrap{border-top:0}.fb-more{border-color:var(--mint200);color:var(--mint700);font-size:13px}
+.fb-operator-guide{margin:32px 0 0;padding-top:24px;border-top:1px solid var(--g300);font-size:13px;color:var(--g700)}.fb-footer-note{margin-top:8px;padding-top:0;border-top:0;text-align:left;font-size:13px;color:var(--g700)}.fb-footer-note a{color:var(--mint700)}
+@media(max-width:600px){.fb-board{gap:14px}.fb-composer>.fb-textarea,.fb-composer .fb-nickname,.fb-comment-composer .fb-nickname{font-size:16px}.fb-feed-order{margin-left:0}}

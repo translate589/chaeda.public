@@ -423,3 +423,24 @@ body[data-guide] #s1{gap:18px!important}body[data-guide] #s9{gap:20px!important}
 }
 
 @media (prefers-reduced-motion:reduce){.trade-step,.trade-build-item{transition:none!important}.trade-step.is-active,.trade-build-item{transform:none!important}}
+
+/* 의견 보드와 맞춘 공통 톤. 바탕색은 하나로 두고, 카드 모서리 20, 진한 민트 버튼, 직접 해 보는 영역은 민트 점선으로 표시한다. */
+body{background:#f7f9f6;color:#173d34}
+.problem-sec,.guide-sec,.experience-sec,.vision-sec,.sec.tint{background:transparent}
+body:not([data-guide]) .sec.tint+.sec,body:not([data-guide]) .sec+.sec.tint{border-top:1px solid var(--g200)}
+.hero,.mark,.ccard.strong{background:var(--mint600)}
+.btn{height:48px;border-radius:12px}
+.guide-card,.question-grid article,.pane,.roadmap-phase{border-radius:20px}
+.roadmap-phase{background:#fff}
+.ccard{background:#fff;border:1px solid var(--g300)}.ccard.strong{border-color:transparent}
+.demo-launch,.pane .btn.solid{background:var(--mint700)}.pane .btn.solid:hover{background:var(--mint900)}
+.experience-actions button{border-radius:12px}
+.experience-layout{padding:28px;border:2px dashed var(--mint400);border-radius:20px;background:#fff}
+@media (max-width:760px){.experience-layout{padding:0;border:0;border-radius:0;background:none}}
+body[data-guide] .cg-cta{border:2px dashed var(--mint400);border-radius:20px;background:#fff;color:#173d34}
+body[data-guide] .cg-cta p{color:var(--g800)}body[data-guide] .cg-cta .cg-cta-small{color:var(--g700)}
+body[data-guide] .cg-actions a{border-color:var(--mint200);border-radius:12px;color:var(--mint700)}
+body[data-guide] .cg-actions a:first-child{background:var(--mint700);border-color:var(--mint700);color:#fff}
+body[data-guide] .cg-actions a:hover{background:var(--mint100);color:var(--mint900)}
+/* 채권 수익구조 가이드는 이번 톤 맞춤에서 제외해 기존 글자색을 유지한다(바탕색은 가이드 자체 규칙이 정한다). */
+body[data-page="bond-yield-structure"]{color:var(--g900)}
