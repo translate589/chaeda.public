@@ -444,3 +444,32 @@ body[data-guide] .cg-actions a:first-child{background:var(--mint700);border-colo
 body[data-guide] .cg-actions a:hover{background:var(--mint100);color:var(--mint900)}
 /* 채권 수익구조 가이드는 이번 톤 맞춤에서 제외해 기존 글자색을 유지한다(바탕색은 가이드 자체 규칙이 정한다). */
 body[data-page="bond-yield-structure"]{color:var(--g900)}
+
+/* ── 홈 채권 뉴스 · 튜토리얼 섹션 ── */
+.news-sec{background:#F5FAF9}.tutorial-sec{background:#fff}
+.spot-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,440px);gap:56px;align-items:center}
+.tutorial-sec .spot-layout{grid-template-columns:minmax(0,440px) minmax(0,1fr)}.tutorial-sec .spot-preview{order:-1}
+.spot-copy h2{line-height:1.3}
+.spot-points{list-style:none;margin:28px 0 0;padding:0;display:flex;flex-direction:column;gap:14px}
+.spot-points li{display:flex;flex-direction:column;gap:2px;padding-left:16px;position:relative}
+.spot-points li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:99px;background:var(--mint500)}
+.spot-points b{font-size:16px}.spot-points span{font-size:14px;color:var(--g700);line-height:1.6}
+.spot-preview{padding:24px;border-radius:28px;background:#fff;border:1px solid #D8E9E5;box-shadow:0 12px 30px rgba(0,105,92,.08);display:flex;flex-direction:column;gap:8px}
+.spot-preview-head{display:flex;align-items:baseline;justify-content:space-between}
+.spot-preview-head b{font-size:18px}.spot-preview-head span{font-size:12px;color:var(--g600)}
+.spot-group{margin-top:4px;font-size:12px;font-weight:700;color:var(--g700)}
+.spot-note{margin:4px 0 0;font-size:11px;color:var(--g500)}
+.spot-disc{margin:32px 0 0;font-size:12px;color:var(--g600)}
+.news-digest{padding:16px 16px 12px;border:1px solid var(--g300);border-radius:20px;display:flex;flex-direction:column;gap:4px}
+.news-digest h3{margin:0;font-size:15px;line-height:1.45;color:var(--mint700)}
+.news-digest ul{list-style:none;margin:0;padding:0}
+.news-digest li{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:14px;color:var(--g700);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.news-digest li::before{content:"";flex:none;width:4px;height:4px;border-radius:99px;background:var(--mint500)}
+.news-more{margin-top:4px;padding-top:8px;border-top:1px solid var(--g200);text-align:right;font-size:12px;font-weight:700;color:var(--g700)}
+.tut-progress{font-size:14px;font-weight:700;color:var(--mint700)}
+.tut-row{display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid var(--g300);border-radius:20px;background:#fff}
+.tut-row>div{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.tut-row b{font-size:14px}.tut-row span{font-size:12px;color:var(--g700)}
+.tut-row em{font-style:normal;font-size:12px;font-weight:700;color:var(--mint700)}
+.tut-row i{font-style:normal;font-size:18px;color:var(--g500)}
+@media (max-width:920px){.spot-layout,.tutorial-sec .spot-layout{grid-template-columns:1fr;gap:32px}.tutorial-sec .spot-preview{order:0}.spot-preview{padding:18px;border-radius:24px}}
